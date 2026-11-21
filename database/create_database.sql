@@ -1,18 +1,4 @@
--- =========================================================
--- DATABASE: quan_ly_tro_cnpm
--- Generated from the supplied Visual Paradigm ERD image.
--- Database name: quan_ly_tro_cnpm.
--- MySQL 8.x / InnoDB / utf8mb4
---
--- Notes:
--- 1. Column names and data types follow the ERD.
--- 2. INT(10) and FLOAT(10) are represented as INT and FLOAT.
---    The display width in INT(10) does not affect the stored range.
--- 3. The ERD does not clearly show a primary-key marker for
---    tblResident and tblReadingVerification. The keys below are
---    inferred: tblResident.idCardNo and tblReadingVerification.reason.
---    Verify these two choices against the original Visual Paradigm model.
--- =========================================================
+
 
 CREATE DATABASE IF NOT EXISTS quan_ly_tro_cnpm
     CHARACTER SET utf8mb4
@@ -20,11 +6,8 @@ CREATE DATABASE IF NOT EXISTS quan_ly_tro_cnpm
 
 USE quan_ly_tro_cnpm;
 
--- Script không DROP bảng để tránh xóa dữ liệu hiện có.
 
--- ---------------------------------------------------------
--- 1. User
--- ---------------------------------------------------------
+
 CREATE TABLE tblUser (
                          id INT NOT NULL AUTO_INCREMENT,
                          username VARCHAR(255) NOT NULL,
@@ -38,9 +21,7 @@ CREATE TABLE tblUser (
                          CONSTRAINT uq_tblUser_username UNIQUE (username)
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- 2. Resident
--- ---------------------------------------------------------
+
 CREATE TABLE tblResident (
                              idCardNo VARCHAR(255) NOT NULL,
                              dateOfBirth DATE NOT NULL,
@@ -53,9 +34,7 @@ CREATE TABLE tblResident (
                                      ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- 3. Building
--- ---------------------------------------------------------
+
 CREATE TABLE tblBuilding (
                              id INT NOT NULL AUTO_INCREMENT,
                              code VARCHAR(255) NOT NULL,
@@ -65,9 +44,7 @@ CREATE TABLE tblBuilding (
                              CONSTRAINT pk_tblBuilding PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- 4. Room
--- ---------------------------------------------------------
+
 CREATE TABLE tblRoom (
                          id INT NOT NULL AUTO_INCREMENT,
                          code VARCHAR(255) NOT NULL,
@@ -83,9 +60,7 @@ CREATE TABLE tblRoom (
                                  ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- 5. Equipment
--- ---------------------------------------------------------
+
 CREATE TABLE tblEquipment (
                               id INT NOT NULL AUTO_INCREMENT,
                               name VARCHAR(255) NOT NULL,
@@ -98,9 +73,7 @@ CREATE TABLE tblEquipment (
                                       ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- 6. Contract
--- ---------------------------------------------------------
+
 CREATE TABLE tblContract (
                              id INT NOT NULL AUTO_INCREMENT,
                              code VARCHAR(255) NOT NULL,
@@ -116,9 +89,7 @@ CREATE TABLE tblContract (
                                      ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- 7. Contract term
--- ---------------------------------------------------------
+
 CREATE TABLE tblContractTerm (
                                  id INT NOT NULL AUTO_INCREMENT,
                                  termNo INT NOT NULL,
@@ -133,9 +104,7 @@ CREATE TABLE tblContractTerm (
                                          ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- 8. Occupancy
--- ---------------------------------------------------------
+
 CREATE TABLE tblOccupancy (
                               id INT NOT NULL AUTO_INCREMENT,
                               isRepresentative INT NOT NULL,
@@ -152,9 +121,7 @@ CREATE TABLE tblOccupancy (
                                       ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- 9. Invoice
--- ---------------------------------------------------------
+
 CREATE TABLE tblInvoice (
                             id INT NOT NULL AUTO_INCREMENT,
                             code VARCHAR(255) NOT NULL,
@@ -171,9 +138,7 @@ CREATE TABLE tblInvoice (
                                     ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- 10. Invoice item
--- ---------------------------------------------------------
+
 CREATE TABLE tblInvoiceItem (
                                 id INT NOT NULL AUTO_INCREMENT,
                                 itemType VARCHAR(255) NOT NULL,
@@ -187,9 +152,7 @@ CREATE TABLE tblInvoiceItem (
                                         ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- 11. Payment proof
--- ---------------------------------------------------------
+
 CREATE TABLE tblPaymentProof (
                                  id INT NOT NULL AUTO_INCREMENT,
                                  imageUrl VARCHAR(255) NOT NULL,
@@ -211,9 +174,7 @@ CREATE TABLE tblPaymentProof (
                                          ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- 12. Meter reading
--- ---------------------------------------------------------
+
 CREATE TABLE tblMeterReading (
                                  id INT NOT NULL AUTO_INCREMENT,
                                  month INT NOT NULL,
@@ -238,9 +199,7 @@ CREATE TABLE tblMeterReading (
                                          ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- 13. Reading verification
--- ---------------------------------------------------------
+
 CREATE TABLE tblReadingVerification (
                                         reason VARCHAR(255) NOT NULL,
                                         method VARCHAR(255) NOT NULL,
@@ -255,9 +214,7 @@ CREATE TABLE tblReadingVerification (
                                                 ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- 14. Incident ticket
--- ---------------------------------------------------------
+
 CREATE TABLE tblIncidentTicket (
                                    id INT NOT NULL AUTO_INCREMENT,
                                    code VARCHAR(255) NOT NULL,
@@ -284,9 +241,7 @@ CREATE TABLE tblIncidentTicket (
                                            ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- 15. Compensation
--- ---------------------------------------------------------
+
 CREATE TABLE tblCompensation (
                                  id INT NOT NULL AUTO_INCREMENT,
                                  amount FLOAT NOT NULL,
