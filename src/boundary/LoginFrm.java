@@ -5,8 +5,7 @@ import entity.User;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class LoginFrm extends JFrame implements ActionListener {
     private JTextField txtUsername;
@@ -22,65 +21,52 @@ public class LoginFrm extends JFrame implements ActionListener {
     }
 
     private void initComponents() {
-        JPanel mainPanel = new JPanel(new BorderLayout(12, 12));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 28, 20, 28));
-
-        JLabel lblTitle = new JLabel("ĐĂNG NHẬP", SwingConstants.CENTER);
-        lblTitle.setFont(new Font("Arial", Font.BOLD, 22));
-        mainPanel.add(lblTitle, BorderLayout.NORTH);
-
-        JPanel formPanel = new JPanel(new GridLayout(2, 2, 10, 12));
-        formPanel.add(new JLabel("Tên đăng nhập:"));
+        JPanel main = new JPanel(new BorderLayout(12, 12));
+        main.setBorder(BorderFactory.createEmptyBorder(20, 28, 20, 28));
+        JLabel title = new JLabel("ĐĂNG NHẬP", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 22));
+        main.add(title, BorderLayout.NORTH);
+        JPanel form = new JPanel(new GridLayout(2, 2, 10, 12));
+        form.add(new JLabel("Tên đăng nhập:"));
         txtUsername = new JTextField();
-        formPanel.add(txtUsername);
-        formPanel.add(new JLabel("Mật khẩu:"));
+        form.add(txtUsername);
+        form.add(new JLabel("Mật khẩu:"));
         txtPassword = new JPasswordField();
-        formPanel.add(txtPassword);
-        mainPanel.add(formPanel, BorderLayout.CENTER);
-
+        form.add(txtPassword);
+        main.add(form, BorderLayout.CENTER);
         btnLogin = new JButton("Đăng nhập");
         btnLogin.addActionListener(this);
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(btnLogin);
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-
-        setContentPane(mainPanel);
+        JPanel buttons = new JPanel(new FlowLayout());
+        buttons.add(btnLogin);
+        main.add(buttons, BorderLayout.SOUTH);
+        setContentPane(main);
         getRootPane().setDefaultButton(btnLogin);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnLogin) {
-            btnLoginClick();
-        }
-    }
-
-    public void btnLoginClick() {
+        if (e.getSource() != btnLogin) return;
         String username = txtUsername.getText().trim();
         String password = new String(txtPassword.getPassword());
-
         if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.",
-                    "Thiếu thông tin", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ tài khoản và mật khẩu.");
             return;
         }
-
-        User inputUser = new User();
-        inputUser.setUsername(username);
-        inputUser.setPasswordHash(password);
-
-        User user = new UserDAO().checkLogin(inputUser);
-        if (user == null) {
-            JOptionPane.showMessageDialog(this,
-                    "Tên đăng nhập hoặc mật khẩu không chính xác.",
-                    "Đăng nhập thất bại", JOptionPane.ERROR_MESSAGE);
+        User input = new User();
+        input.setUsername(username);
+        input.setPasswordHash(password);
+        User user = new UserDAO().checkLogin(input);
+        if (user == null || !"ACTIVE".equalsIgnoreCase(user.getStatus())) {
+            JOptionPane.showMessageDialog(this, "Đăng nhập thất bại hoặc tài khoản không hoạt động.");
             txtPassword.setText("");
-            txtPassword.requestFocus();
             return;
         }
-
-        new TenantHomeFrm(user).setVisible(true);
+        if ("LANDLORD".equalsIgnoreCase(user.getRole())) new LandlordHomeFrm(user).setVisible(true);
+        else if ("TENANT".equalsIgnoreCase(user.getRole())) new TenantHomeFrm(user).setVisible(true);
+        else {
+            JOptionPane.showMessageDialog(this, "Vai trò chưa được hỗ trợ.");
+            return;
+        }
         dispose();
     }
 }

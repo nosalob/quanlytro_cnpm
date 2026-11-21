@@ -45,7 +45,10 @@ public class InvoiceItemListFrm extends JFrame implements ActionListener {
 
         String[] columns = {"Loại khoản thu", "Mô tả", "Số lượng", "Đơn giá", "Thành tiền"};
         DefaultTableModel model = new DefaultTableModel(columns, 0) {
-            @Override public boolean isCellEditable(int row, int column) { return false; }
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
         tblInvoiceItem = new JTable(model);
         add(new JScrollPane(tblInvoiceItem), BorderLayout.CENTER);

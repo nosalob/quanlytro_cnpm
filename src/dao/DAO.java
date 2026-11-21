@@ -12,9 +12,7 @@ public class DAO {
         try {
             con = DBConnection.getConnection();
         } catch (SQLException e) {
-            throw new IllegalStateException(
-                    "Không thể kết nối đến cơ sở dữ liệu.", e
-            );
+            throw new IllegalStateException("Không thể kết nối đến cơ sở dữ liệu.", e);
         }
     }
 

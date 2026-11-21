@@ -56,30 +56,41 @@ public class SubmitPaymentProofFrm extends JFrame implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(7, 7, 7, 7);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         form.add(new JLabel("Hóa đơn:"), gbc);
         gbc.gridx = 1;
         form.add(new JLabel(invoice.getCode() + " - tháng " + invoice.getMonth() + "/" + invoice.getYear()), gbc);
 
-        gbc.gridx = 0; gbc.gridy++;
+        gbc.gridx = 0;
+        gbc.gridy++;
         form.add(new JLabel("Số tiền đã chuyển:"), gbc);
         txtAmount = new JTextField();
-        gbc.gridx = 1; gbc.weightx = 1;
+        gbc.gridx = 1;
+        gbc.weightx = 1;
         form.add(txtAmount, gbc);
 
-        gbc.gridx = 0; gbc.gridy++; gbc.weightx = 0;
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0;
         form.add(new JLabel("Ngày chuyển (yyyy-MM-dd):"), gbc);
         txtTransferDate = new JTextField(LocalDate.now().toString());
-        gbc.gridx = 1; gbc.weightx = 1;
+        gbc.gridx = 1;
+        gbc.weightx = 1;
         form.add(txtTransferDate, gbc);
 
-        gbc.gridx = 0; gbc.gridy++; gbc.weightx = 0;
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0;
         form.add(new JLabel("Ghi chú:"), gbc);
         txtNote = new JTextField();
-        gbc.gridx = 1; gbc.weightx = 1;
+        gbc.gridx = 1;
+        gbc.weightx = 1;
         form.add(txtNote, gbc);
 
-        gbc.gridx = 0; gbc.gridy++; gbc.weightx = 0;
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0;
         form.add(new JLabel("Ảnh minh chứng:"), gbc);
         JPanel imagePanel = new JPanel(new BorderLayout(5, 5));
         btnChooseImage = new JButton("Chọn ảnh");
@@ -88,7 +99,8 @@ public class SubmitPaymentProofFrm extends JFrame implements ActionListener {
         lblImage.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         imagePanel.add(btnChooseImage, BorderLayout.NORTH);
         imagePanel.add(lblImage, BorderLayout.CENTER);
-        gbc.gridx = 1; gbc.weightx = 1;
+        gbc.gridx = 1;
+        gbc.weightx = 1;
         form.add(imagePanel, gbc);
         add(form, BorderLayout.CENTER);
 
@@ -186,7 +198,10 @@ public class SubmitPaymentProofFrm extends JFrame implements ActionListener {
 
         boolean inserted = new PaymentProofDAO().addPaymentProof(paymentProof, invoice.getId(), user.getId());
         if (!inserted) {
-            try { Files.deleteIfExists(copiedImage); } catch (Exception ignored) { }
+            try {
+                Files.deleteIfExists(copiedImage);
+            } catch (Exception ignored) {
+            }
             JOptionPane.showMessageDialog(this, "Không lưu được minh chứng. Vui lòng kiểm tra kết nối và dữ liệu.");
             return;
         }

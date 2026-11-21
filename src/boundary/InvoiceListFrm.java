@@ -8,18 +8,16 @@ import entity.User;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InvoiceListFrm extends JFrame implements ActionListener {
-    private JButton btnInvoiceItem;
+    private final User user;
+    private JButton btnInvoiceItem, btnSearch, btnBack;
     private JTable tblInvoice;
     private JLabel lblStatus;
-    private JButton btnSearch;
-    private User user;
     private List<Invoice> invoices = new ArrayList<>();
 
     public InvoiceListFrm(User user) {
@@ -32,50 +30,51 @@ public class InvoiceListFrm extends JFrame implements ActionListener {
         loadInvoices();
     }
 
+    private boolean isLandlord() {
+        return user != null && "LANDLORD".equalsIgnoreCase(user.getRole());
+    }
+
     private void initComponents() {
         setLayout(new BorderLayout(10, 10));
         JLabel title = new JLabel("DANH SÁCH HÓA ĐƠN", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 20));
         add(title, BorderLayout.NORTH);
-
-        String[] columns = {"Mã hóa đơn", "Tháng", "Năm", "Hạn thanh toán", "Tổng tiền", "Trạng thái"};
-        DefaultTableModel model = new DefaultTableModel(columns, 0) {
-            @Override public boolean isCellEditable(int row, int column) { return false; }
+        DefaultTableModel model = new DefaultTableModel(
+                new String[]{"Mã hóa đơn", "Tháng", "Năm", "Hạn thanh toán", "Tổng tiền", "Trạng thái"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;
+            }
         };
         tblInvoice = new JTable(model);
         tblInvoice.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         add(new JScrollPane(tblInvoice), BorderLayout.CENTER);
-
         JPanel bottom = new JPanel(new BorderLayout());
         lblStatus = new JLabel(" ");
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        btnSearch = new JButton("Làm mới");
-        btnInvoiceItem = new JButton("Xem chi tiết hóa đơn");
-        btnSearch.addActionListener(this);
-        btnInvoiceItem.addActionListener(this);
-        buttons.add(btnSearch);
-        buttons.add(btnInvoiceItem);
         bottom.add(lblStatus, BorderLayout.CENTER);
+        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        btnBack = new JButton("Quay lại");
+        btnSearch = new JButton(isLandlord() ? "Tìm hóa đơn cần duyệt" : "Làm mới");
+        btnInvoiceItem = new JButton(isLandlord() ? "Xem minh chứng" : "Xem chi tiết hóa đơn");
+        for (JButton b : new JButton[]{btnBack, btnSearch, btnInvoiceItem}) {
+            b.addActionListener(this);
+            buttons.add(b);
+        }
         bottom.add(buttons, BorderLayout.EAST);
         add(bottom, BorderLayout.SOUTH);
     }
 
     private void loadInvoices() {
-        List<Integer> contractIds = new ArrayList<>();
-        if (user != null && user.getContracts() != null) {
-            for (Contract contract : user.getContracts()) {
-                if (contract != null) contractIds.add(contract.getId());
-            }
-        }
-
-        invoices = new InvoiceDAO().getInvoicesByContract(contractIds);
+        List<Integer> ids = new ArrayList<>();
+        if (user != null && user.getContracts() != null)
+            for (Contract c : user.getContracts()) if (c != null) ids.add(c.getId());
+        invoices = new InvoiceDAO().getInvoicesByContract(ids);
         DefaultTableModel model = (DefaultTableModel) tblInvoice.getModel();
         model.setRowCount(0);
         DecimalFormat money = new DecimalFormat("#,##0.##");
-        for (Invoice invoice : invoices) {
-            model.addRow(new Object[]{invoice.getCode(), invoice.getMonth(), invoice.getYear(),
-                    invoice.getDueDate(), money.format(invoice.getTotalAmount()), invoice.getStatus()});
-        }
+        for (Invoice i : invoices)
+            model.addRow(new Object[]{i.getCode(), i.getMonth(), i.getYear(),
+                    i.getDueDate(), money.format(i.getTotalAmount()), i.getStatus()});
         lblStatus.setText("Số hóa đơn: " + invoices.size());
     }
 
@@ -83,19 +82,29 @@ public class InvoiceListFrm extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnSearch) btnSearchClick();
         else if (e.getSource() == btnInvoiceItem) btnInvoiceItemClick();
+        else if (e.getSource() == btnBack) {
+            if (isLandlord()) new LandlordHomeFrm(user).setVisible(true);
+            else new TenantHomeFrm(user).setVisible(true);
+            dispose();
+        }
     }
 
-    public void btnSearchClick() { loadInvoices(); }
+    public void btnSearchClick() {
+        if (isLandlord()) {
+            new SearchPendingPaymentFrm(user).setVisible(true);
+            dispose();
+        } else loadInvoices();
+    }
 
     public void btnInvoiceItemClick() {
-        int selectedRow = tblInvoice.getSelectedRow();
-        if (selectedRow < 0) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn hóa đơn cần xem.");
+        int row = tblInvoice.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn hóa đơn.");
             return;
         }
-        int modelRow = tblInvoice.convertRowIndexToModel(selectedRow);
-        Invoice selectedInvoice = invoices.get(modelRow);
-        new InvoiceItemListFrm(user, selectedInvoice).setVisible(true);
+        Invoice selected = invoices.get(tblInvoice.convertRowIndexToModel(row));
+        if (isLandlord()) new ReviewPaymentProofFrm(user, selected).setVisible(true);
+        else new InvoiceItemListFrm(user, selected).setVisible(true);
         dispose();
     }
 }

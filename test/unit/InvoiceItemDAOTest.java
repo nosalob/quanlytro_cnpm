@@ -1,4 +1,3 @@
-
 package unit;
 
 import dao.InvoiceItemDAO;
@@ -40,11 +39,7 @@ public class InvoiceItemDAOTest {
             double total = 0;
 
             for (InvoiceItem item : items) {
-                Assert.assertEquals(
-                        item.getQuantity() * item.getUnitPrice(),
-                        item.getAmount(),
-                        0.01
-                );
+                Assert.assertEquals(item.getQuantity() * item.getUnitPrice(), item.getAmount(), 0.01);
 
                 total += item.getAmount();
             }
@@ -72,10 +67,7 @@ public class InvoiceItemDAOTest {
             ps.setString(1, "TEST-INV-09");
 
             try (ResultSet rs = ps.executeQuery()) {
-                Assert.assertTrue(
-                        "Không tìm thấy hóa đơn kiểm thử",
-                        rs.next()
-                );
+                Assert.assertTrue("Không tìm thấy hóa đơn kiểm thử", rs.next());
 
                 return rs.getInt("id");
             }
