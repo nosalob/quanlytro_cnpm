@@ -22,7 +22,11 @@ public class SearchTicketFrm extends JFrame implements ActionListener {
     private final JButton btnBack = new JButton("Quay lại");
     private final JLabel lblStatus = new JLabel(" ");
     private final DefaultTableModel tableModel = new DefaultTableModel(
+<<<<<<< HEAD
         new String[]{"Mã ticket", "Phòng", "Tiêu đề", "Trạng thái", "Ngày tạo"}, 0) {
+=======
+            new String[]{"Mã ticket", "Phòng", "Tiêu đề", "Trạng thái", "Ngày tạo"}, 0) {
+>>>>>>> 6f87f1b33f69b96e935fd7a7829142150423a882
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -38,7 +42,11 @@ public class SearchTicketFrm extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+<<<<<<< HEAD
         for (Building b : new BuildingDAO().getActiveBuildings()) cboBuilding.addItem(b);
+=======
+        for (Building b : new BuildingDAO().getAllBuildings()) cboBuilding.addItem(b);
+>>>>>>> 6f87f1b33f69b96e935fd7a7829142150423a882
 
         JPanel top = new JPanel(new FlowLayout());
         top.add(new JLabel("Tòa nhà:"));

@@ -11,6 +11,7 @@ import java.util.List;
 
 public class IncidentTicketDAO extends DAO {
     private static final String SELECT_TICKET =
+<<<<<<< HEAD
     "SELECT t.id, t.code, t.title, t.description, t.imageUrl, t.status, t.faultType, " +
     "t.resolutionNote, t.createdAt, t.resolvedAt, " +
     "r.id AS roomId, r.code AS roomCode, r.tblBuildingid AS buildingId, " +
@@ -19,6 +20,16 @@ public class IncidentTicketDAO extends DAO {
     "JOIN tblRoom r ON r.id = t.tblRoomid " +
     "JOIN tblResident rs ON rs.idCardNo = t.tblResidentid " +
     "JOIN tblUser u ON u.id = rs.tblUserid ";
+=======
+            "SELECT t.id, t.code, t.title, t.description, t.imageUrl, t.status, t.faultType, " +
+            "t.resolutionNote, t.createdAt, t.resolvedAt, " +
+            "r.id AS roomId, r.code AS roomCode, r.tblBuildingid AS buildingId, " +
+            "u.id AS userId, u.fullName, u.phone " +
+            "FROM tblIncidentTicket t " +
+            "JOIN tblRoom r ON r.id = t.tblRoomid " +
+            "JOIN tblResident rs ON rs.idCardNo = t.tblResidentid " +
+            "JOIN tblUser u ON u.id = rs.tblUserid ";
+>>>>>>> 6f87f1b33f69b96e935fd7a7829142150423a882
 
     public IncidentTicketDAO() {
         super();
@@ -59,7 +70,11 @@ public class IncidentTicketDAO extends DAO {
     // faultType trong DB là NOT NULL nên chưa phân loại thì lưu "NONE"
     public boolean updateStatus(int ticketId, String status, String faultType, String note) {
         String sql = "UPDATE tblIncidentTicket SET status = ?, faultType = ?, resolutionNote = ?, " +
+<<<<<<< HEAD
         "resolvedAt = IF(? = 'RESOLVED', CURDATE(), NULL) WHERE id = ?";
+=======
+                "resolvedAt = IF(? = 'RESOLVED', CURDATE(), NULL) WHERE id = ?";
+>>>>>>> 6f87f1b33f69b96e935fd7a7829142150423a882
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setString(1, status);
             ps.setString(2, faultType == null ? "NONE" : faultType);

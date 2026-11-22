@@ -9,9 +9,12 @@ public final class DBConnection {
     "jdbc:mysql://localhost:3306/quan_ly_tro_cnpm?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh&useUnicode=true&characterEncoding=UTF-8";
     private static final String USER = "root";
     private static final String PASSWORD = "123456";
+<<<<<<< HEAD
 
     private DBConnection() {
     }
+=======
+>>>>>>> 6f87f1b33f69b96e935fd7a7829142150423a882
 
     public static Connection getConnection() throws SQLException {
         // Load the driver explicitly so the connection does not depend on
