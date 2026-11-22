@@ -14,7 +14,6 @@ public class Compensation {
     public Compensation() {
     }
 
-<<<<<<< HEAD
     public int getId() {
         return id;
     }
@@ -57,20 +56,4 @@ public class Compensation {
     public void setSettledAt(Date settledAt) {
         this.settledAt = settledAt;
     }
-=======
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public double getAmount() { return amount; }
-    public void setAmount(double amount) { this.amount = amount; }
-    public String getReason() { return reason; }
-    public void setReason(String reason) { this.reason = reason; }
-    public String getMethod() { return method; }
-    public void setMethod(String method) { this.method = method; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-    public Date getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
-    public Date getSettledAt() { return settledAt; }
-    public void setSettledAt(Date settledAt) { this.settledAt = settledAt; }
->>>>>>> 6f87f1b33f69b96e935fd7a7829142150423a882
 }

@@ -16,11 +16,7 @@ public class CompensationDAO extends DAO {
     // bảng tblCompensation chỉ nối với ticket (không có cột hợp đồng)
     public boolean addCompensation(int ticketId, Compensation comp) {
         String sql = "INSERT INTO tblCompensation(amount, reason, method, status, createdAt, settledAt, tblIncidentTicketid) " +
-<<<<<<< HEAD
         "VALUES (?, ?, ?, ?, CURDATE(), IF(? = 'SETTLED', CURDATE(), NULL), ?)";
-=======
-                "VALUES (?, ?, ?, ?, CURDATE(), IF(? = 'SETTLED', CURDATE(), NULL), ?)";
->>>>>>> 6f87f1b33f69b96e935fd7a7829142150423a882
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setDouble(1, comp.getAmount());
             ps.setString(2, comp.getReason());

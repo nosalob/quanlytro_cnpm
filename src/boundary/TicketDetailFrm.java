@@ -30,21 +30,12 @@ public class TicketDetailFrm extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         lblTicketInfo.setText("<html>Mã: " + ticket.getCode()
-<<<<<<< HEAD
             + "<br>Phòng: " + ticket.getRoom().getCode()
             + "<br>Người thuê: " + ticket.getUser().getFullName() + " - " + ticket.getUser().getPhone()
             + "<br>Tiêu đề: " + ticket.getTitle()
             + "<br>Mô tả: " + ticket.getDescription()
             + "<br>Ngày tạo: " + ticket.getCreatedAt()
             + "<br>Trạng thái hiện tại: " + ticket.getStatus() + "</html>");
-=======
-                + "<br>Phòng: " + ticket.getRoom().getCode()
-                + "<br>Người thuê: " + ticket.getUser().getFullName() + " - " + ticket.getUser().getPhone()
-                + "<br>Tiêu đề: " + ticket.getTitle()
-                + "<br>Mô tả: " + ticket.getDescription()
-                + "<br>Ngày tạo: " + ticket.getCreatedAt()
-                + "<br>Trạng thái hiện tại: " + ticket.getStatus() + "</html>");
->>>>>>> 6f87f1b33f69b96e935fd7a7829142150423a882
         cboFaultType.setEnabled(false);
 
         JPanel form = new JPanel(new GridLayout(3, 2));
