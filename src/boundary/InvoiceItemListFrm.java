@@ -37,7 +37,7 @@ public class InvoiceItemListFrm extends JFrame implements ActionListener {
         setLayout(new BorderLayout(10, 10));
         JPanel info = new JPanel(new GridLayout(2, 1, 4, 4));
         lblMonth = new JLabel("Hóa đơn tháng " + invoice.getMonth() + "/" + invoice.getYear()
-                + " - Mã: " + invoice.getCode());
+            + " - Mã: " + invoice.getCode());
         lblStatus = new JLabel("Trạng thái: " + invoice.getStatus());
         info.add(lblMonth);
         info.add(lblStatus);

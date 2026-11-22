@@ -19,12 +19,12 @@ public class InvoiceDAO extends DAO {
         List<Invoice> invoices = new ArrayList<>();
         if (contractIds == null || contractIds.isEmpty()) return invoices;
         StringBuilder sql = new StringBuilder("SELECT i.id, i.code, i.month, i.year, i.dueDate, i.status, " +
-                "i.issuedAt, i.paidAt, COALESCE(SUM(ii.quantity * ii.unitPrice), 0) AS totalAmount " +
-                "FROM tblInvoice i LEFT JOIN tblInvoiceItem ii ON ii.tblInvoiceid = i.id " +
-                "WHERE i.tblContractid IN (");
+            "i.issuedAt, i.paidAt, COALESCE(SUM(ii.quantity * ii.unitPrice), 0) AS totalAmount " +
+            "FROM tblInvoice i LEFT JOIN tblInvoiceItem ii ON ii.tblInvoiceid = i.id " +
+            "WHERE i.tblContractid IN (");
         for (int i = 0; i < contractIds.size(); i++) sql.append(i == 0 ? "?" : ", ?");
         sql.append(") GROUP BY i.id, i.code, i.month, i.year, i.dueDate, i.status, i.issuedAt, i.paidAt " +
-                "ORDER BY i.year DESC, i.month DESC, i.id DESC");
+            "ORDER BY i.year DESC, i.month DESC, i.id DESC");
         try (PreparedStatement ps = getConnection().prepareStatement(sql.toString())) {
             for (int i = 0; i < contractIds.size(); i++) ps.setInt(i + 1, contractIds.get(i));
             try (ResultSet rs = ps.executeQuery()) {
@@ -39,11 +39,11 @@ public class InvoiceDAO extends DAO {
     public List<Invoice> searchPendingPayment(int buildingId, int roomId, String time, String status) {
         List<Invoice> result = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
-                "SELECT i.id, i.code, i.month, i.year, i.dueDate, i.status, i.issuedAt, i.paidAt, " +
-                        "COALESCE(SUM(ii.quantity * ii.unitPrice), 0) AS totalAmount " +
-                        "FROM tblInvoice i JOIN tblContract c ON c.id = i.tblContractid " +
-                        "JOIN tblRoom r ON r.id = c.tblRoomid " +
-                        "LEFT JOIN tblInvoiceItem ii ON ii.tblInvoiceid = i.id WHERE 1=1");
+            "SELECT i.id, i.code, i.month, i.year, i.dueDate, i.status, i.issuedAt, i.paidAt, " +
+            "COALESCE(SUM(ii.quantity * ii.unitPrice), 0) AS totalAmount " +
+            "FROM tblInvoice i JOIN tblContract c ON c.id = i.tblContractid " +
+            "JOIN tblRoom r ON r.id = c.tblRoomid " +
+            "LEFT JOIN tblInvoiceItem ii ON ii.tblInvoiceid = i.id WHERE 1=1");
         List<Object> params = new ArrayList<>();
         if (buildingId > 0) {
             sql.append(" AND r.tblBuildingid = ?");
@@ -73,7 +73,7 @@ public class InvoiceDAO extends DAO {
             params.add(status);
         }
         sql.append(" GROUP BY i.id, i.code, i.month, i.year, i.dueDate, i.status, i.issuedAt, i.paidAt " +
-                "ORDER BY i.year DESC, i.month DESC, i.id DESC");
+            "ORDER BY i.year DESC, i.month DESC, i.id DESC");
         try (PreparedStatement ps = getConnection().prepareStatement(sql.toString())) {
             for (int i = 0; i < params.size(); i++) ps.setObject(i + 1, params.get(i));
             try (ResultSet rs = ps.executeQuery()) {
@@ -87,7 +87,7 @@ public class InvoiceDAO extends DAO {
 
     public boolean updateStatus(int invoiceId, String status) {
         String sql = "UPDATE tblInvoice SET status = ?, paidAt = CASE WHEN ? = 'Đã thanh toán' " +
-                "THEN CURRENT_DATE() ELSE NULL END WHERE id = ?";
+        "THEN CURRENT_DATE() ELSE NULL END WHERE id = ?";
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setString(1, status);
             ps.setString(2, status);
@@ -102,7 +102,7 @@ public class InvoiceDAO extends DAO {
     public List<Integer> getBuildingIds() {
         List<Integer> ids = new ArrayList<>();
         try (Statement s = getConnection().createStatement();
-             ResultSet rs = s.executeQuery("SELECT id FROM tblBuilding ORDER BY id")) {
+            ResultSet rs = s.executeQuery("SELECT id FROM tblBuilding ORDER BY id")) {
             while (rs.next()) ids.add(rs.getInt(1));
         } catch (SQLException e) {
             throw new IllegalStateException("Không lấy được tòa nhà", e);

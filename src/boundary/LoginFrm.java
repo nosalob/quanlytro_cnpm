@@ -2,6 +2,7 @@ package boundary;
 
 import dao.UserDAO;
 import entity.User;
+import util.DataAccessException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,7 +56,16 @@ public class LoginFrm extends JFrame implements ActionListener {
         User input = new User();
         input.setUsername(username);
         input.setPasswordHash(password);
-        User user = new UserDAO().checkLogin(input);
+        User user;
+        try (UserDAO userDAO = new UserDAO()) {
+            user = userDAO.checkLogin(input);
+        } catch (DataAccessException ex) {
+            Throwable cause = ex.getCause();
+            String detail = cause == null ? ex.getMessage() : cause.getMessage();
+            JOptionPane.showMessageDialog(this, "Không thể truy cập cơ sở dữ liệu: " + detail,
+                "Lỗi kết nối", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         if (user == null || !"ACTIVE".equalsIgnoreCase(user.getStatus())) {
             JOptionPane.showMessageDialog(this, "Đăng nhập thất bại hoặc tài khoản không hoạt động.");
             txtPassword.setText("");
@@ -68,5 +78,9 @@ public class LoginFrm extends JFrame implements ActionListener {
             return;
         }
         dispose();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new LoginFrm().setVisible(true));
     }
 }

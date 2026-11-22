@@ -1,9 +1,10 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
     private int id;
     private String username;
     private String passwordHash;
@@ -12,10 +13,22 @@ public class User {
     private String email;
     private String role;
     private String status;
+    private String tempPassword;
     private List<PaymentProof> paymentProofs = new ArrayList<>();
     private List<Contract> contracts = new ArrayList<>();
 
     public User() {
+    }
+
+    public User(String username, String passwordHash, String fullName, String role) {
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.fullName = fullName;
+        this.role = role;
+    }
+
+    public static String hash(String plain) {
+        return util.PasswordUtil.hash(plain);
     }
 
     public int getId() {
@@ -80,6 +93,14 @@ public class User {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getTempPassword() {
+        return tempPassword;
+    }
+
+    public void setTempPassword(String tempPassword) {
+        this.tempPassword = tempPassword;
     }
 
     public List<PaymentProof> getPaymentProofs() {

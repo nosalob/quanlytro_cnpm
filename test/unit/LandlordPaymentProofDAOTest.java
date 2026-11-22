@@ -22,7 +22,7 @@ public class LandlordPaymentProofDAOTest {
 
     private int insertProof(Connection con, int invoiceId, int tenantId) throws SQLException {
         String sql = "INSERT INTO tblPaymentProof (imageUrl, declaredAmount, transferDate, note, " +
-                "status, submittedAt, tblInvoiceid, tblUserid) VALUES (?,?,?,?,'Chờ xác nhận',CURRENT_DATE(),?,?)";
+        "status, submittedAt, tblInvoiceid, tblUserid) VALUES (?,?,?,?,'Chờ xác nhận',CURRENT_DATE(),?,?)";
         try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, "images/junit.png");
             ps.setDouble(2, 3430000);

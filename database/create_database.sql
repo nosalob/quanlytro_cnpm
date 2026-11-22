@@ -190,13 +190,17 @@ CREATE TABLE tblMeterReading (
                                  reviewedAt DATE NULL,
                                  tblRoomid INT NOT NULL,
                                  tblResidentid VARCHAR(255) NOT NULL,
+                                 tblUserid INT NULL,
                                  CONSTRAINT pk_tblMeterReading PRIMARY KEY (id),
                                  CONSTRAINT fk_tblMeterReading_tblRoom
                                      FOREIGN KEY (tblRoomid) REFERENCES tblRoom(id)
                                          ON UPDATE CASCADE ON DELETE RESTRICT,
                                  CONSTRAINT fk_tblMeterReading_tblResident
                                      FOREIGN KEY (tblResidentid) REFERENCES tblResident(idCardNo)
-                                         ON UPDATE CASCADE ON DELETE RESTRICT
+                                         ON UPDATE CASCADE ON DELETE RESTRICT,
+                                 CONSTRAINT fk_tblMeterReading_tblReviewer
+                                     FOREIGN KEY (tblUserid) REFERENCES tblUser(id)
+                                         ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 
@@ -256,4 +260,169 @@ CREATE TABLE tblCompensation (
                                      FOREIGN KEY (tblIncidentTicketid) REFERENCES tblIncidentTicket(id)
                                          ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
+
+
+-- Stored procedures merged from the supplied database script.
+DELIMITER $$
+
+CREATE PROCEDURE spGetActiveBuildings()
+BEGIN
+    SELECT id, code, name, address, status
+    FROM tblBuilding
+    WHERE status = 'ACTIVE'
+    ORDER BY name;
+END$$
+
+CREATE PROCEDURE spSearchVacantRoom(IN pBuildingId INT, IN pKeyword VARCHAR(255))
+BEGIN
+    SELECT id, code, area, rentPrice, depositAmount, maxOccupants, status
+    FROM tblRoom
+    WHERE tblBuildingid = pBuildingId
+      AND status = 'VACANT'
+      AND code LIKE CONCAT('%', pKeyword, '%')
+    ORDER BY code;
+END$$
+
+CREATE PROCEDURE spCountRoomConflicts(IN pRoomId INT, IN pStart DATE, IN pEnd DATE)
+BEGIN
+    SELECT COUNT(*) AS conflicts
+    FROM tblContract c
+    JOIN tblContractTerm t ON t.tblContractid = c.id
+    WHERE c.tblRoomid = pRoomId
+      AND c.status = 'ACTIVE'
+      AND t.startDate <= pEnd
+      AND t.endDate >= pStart;
+END$$
+
+-- This project's tblResident.idCardNo is the resident identifier;
+-- tblUserid links it to tblUser.
+CREATE PROCEDURE spSearchResident(IN pIdCardNo VARCHAR(255))
+BEGIN
+    SELECT u.id, u.username, u.passwordHash, u.fullName, u.phone, u.email, u.role, u.status,
+           r.idCardNo, r.dateOfBirth, r.hometown, r.note
+    FROM tblResident r
+    JOIN tblUser u ON u.id = r.tblUserid
+    WHERE r.idCardNo = pIdCardNo;
+END$$
+
+DELIMITER ;
+
+
+-- Sample data merged from verify_meter_reading.sql and
+-- sample_incident_ticket.sql. It uses this project's schema:
+-- tblResidentid is an ID-card number and meter readings store invoiceValue.
+-- These inserts can be run again without duplicating the sample rows.
+
+INSERT INTO tblUser (username, passwordHash, fullName, phone, email, role, status)
+SELECT 'chutro01', SHA2('123456', 256), 'Nguyen Van A', '0900000001',
+       'chutro01@example.com', 'LANDLORD', 'ACTIVE'
+WHERE NOT EXISTS (SELECT 1 FROM tblUser WHERE username = 'chutro01');
+
+INSERT INTO tblUser (username, passwordHash, fullName, phone, email, role, status)
+SELECT 'nguoithue01', SHA2('123456', 256), 'Tran Thi B', '0900000002',
+       'nguoithue01@example.com', 'TENANT', 'ACTIVE'
+WHERE NOT EXISTS (SELECT 1 FROM tblUser WHERE username = 'nguoithue01');
+
+INSERT INTO tblUser (username, passwordHash, fullName, phone, email, role, status)
+SELECT 'tenant_sc', SHA2('123456', 256), 'Nguyen Van B', '0900000003',
+       'tenant_sc@mail.com', 'TENANT', 'ACTIVE'
+WHERE NOT EXISTS (SELECT 1 FROM tblUser WHERE username = 'tenant_sc');
+
+INSERT INTO tblResident (idCardNo, dateOfBirth, hometown, note, tblUserid)
+SELECT '001099000001', '1999-05-20', 'Ha Noi', NULL, u.id
+FROM tblUser u
+WHERE u.username = 'nguoithue01'
+  AND NOT EXISTS (SELECT 1 FROM tblResident WHERE idCardNo = '001099000001');
+
+INSERT INTO tblResident (idCardNo, dateOfBirth, hometown, note, tblUserid)
+SELECT '001200000001', '2000-01-01', 'Ha Noi', NULL, u.id
+FROM tblUser u
+WHERE u.username = 'tenant_sc'
+  AND NOT EXISTS (SELECT 1 FROM tblResident WHERE idCardNo = '001200000001');
+
+INSERT INTO tblBuilding (code, name, address, status)
+SELECT 'NT01', 'Nha tro Hanh Phuc', '12 Xuan Thuy, Cau Giay, Ha Noi', 'ACTIVE'
+WHERE NOT EXISTS (SELECT 1 FROM tblBuilding WHERE code = 'NT01');
+
+INSERT INTO tblBuilding (code, name, address, status)
+SELECT 'BLD-SC', 'Building A', 'Ha Noi', 'ACTIVE'
+WHERE NOT EXISTS (SELECT 1 FROM tblBuilding WHERE code = 'BLD-SC');
+
+INSERT INTO tblRoom (code, area, rentPrice, depositAmount, maxOccupants, status, tblBuildingid)
+SELECT 'P101', 25, 3000000, 3000000, 2, 'OCCUPIED', b.id
+FROM tblBuilding b
+WHERE b.code = 'NT01'
+  AND NOT EXISTS (SELECT 1 FROM tblRoom r WHERE r.code = 'P101' AND r.tblBuildingid = b.id);
+
+INSERT INTO tblRoom (code, area, rentPrice, depositAmount, maxOccupants, status, tblBuildingid)
+SELECT 'P102', 20, 2500000, 2500000, 2, 'OCCUPIED', b.id
+FROM tblBuilding b
+WHERE b.code = 'NT01'
+  AND NOT EXISTS (SELECT 1 FROM tblRoom r WHERE r.code = 'P102' AND r.tblBuildingid = b.id);
+
+INSERT INTO tblRoom (code, area, rentPrice, depositAmount, maxOccupants, status, tblBuildingid)
+SELECT 'P.101', 25, 3000000, 5000000, 2, 'OCCUPIED', b.id
+FROM tblBuilding b
+WHERE b.code = 'BLD-SC'
+  AND NOT EXISTS (SELECT 1 FROM tblRoom r WHERE r.code = 'P.101' AND r.tblBuildingid = b.id);
+
+INSERT INTO tblMeterReading
+    (month, year, type, previousValue, currentValue, evidenceImageUrl, invoiceValue,
+     status, reviewNote, submittedAt, reviewedAt, tblRoomid, tblResidentid, tblUserid)
+SELECT 11, 2026, 'ELECTRIC', 1240, 1318, NULL, 1315, 'PENDING', NULL,
+       '2026-11-05', NULL, r.id, '001099000001', NULL
+FROM tblRoom r JOIN tblBuilding b ON b.id = r.tblBuildingid
+WHERE b.code = 'NT01' AND r.code = 'P101'
+  AND NOT EXISTS (SELECT 1 FROM tblMeterReading m
+                  WHERE m.month = 11 AND m.year = 2026 AND m.type = 'ELECTRIC'
+                    AND m.tblRoomid = r.id AND m.tblResidentid = '001099000001');
+
+INSERT INTO tblMeterReading
+    (month, year, type, previousValue, currentValue, evidenceImageUrl, invoiceValue,
+     status, reviewNote, submittedAt, reviewedAt, tblRoomid, tblResidentid, tblUserid)
+SELECT 11, 2026, 'WATER', 85, 92, NULL, NULL, 'PENDING', NULL,
+       '2026-11-05', NULL, r.id, '001099000001', NULL
+FROM tblRoom r JOIN tblBuilding b ON b.id = r.tblBuildingid
+WHERE b.code = 'NT01' AND r.code = 'P101'
+  AND NOT EXISTS (SELECT 1 FROM tblMeterReading m
+                  WHERE m.month = 11 AND m.year = 2026 AND m.type = 'WATER'
+                    AND m.tblRoomid = r.id AND m.tblResidentid = '001099000001');
+
+INSERT INTO tblMeterReading
+    (month, year, type, previousValue, currentValue, evidenceImageUrl, invoiceValue,
+     status, reviewNote, submittedAt, reviewedAt, tblRoomid, tblResidentid, tblUserid)
+SELECT 11, 2026, 'ELECTRIC', 980, 1105, NULL, 1090, 'PENDING', NULL,
+       '2026-11-05', NULL, r.id, '001099000001', NULL
+FROM tblRoom r JOIN tblBuilding b ON b.id = r.tblBuildingid
+WHERE b.code = 'NT01' AND r.code = 'P102'
+  AND NOT EXISTS (SELECT 1 FROM tblMeterReading m
+                  WHERE m.month = 11 AND m.year = 2026 AND m.type = 'ELECTRIC'
+                    AND m.tblRoomid = r.id AND m.tblResidentid = '001099000001');
+
+INSERT INTO tblContract (code, depositAmount, status, createdAt, tblRoomid)
+SELECT 'HD-0123', 5000000, 'ACTIVE', '2026-01-01', r.id
+FROM tblRoom r JOIN tblBuilding b ON b.id = r.tblBuildingid
+WHERE b.code = 'BLD-SC' AND r.code = 'P.101'
+  AND NOT EXISTS (SELECT 1 FROM tblContract WHERE code = 'HD-0123');
+
+INSERT INTO tblContractTerm (termNo, startDate, endDate, rentPrice, status, tblContractid)
+SELECT 1, '2026-01-01', '2026-12-31', 3000000, 'ACTIVE', c.id
+FROM tblContract c
+WHERE c.code = 'HD-0123'
+  AND NOT EXISTS (SELECT 1 FROM tblContractTerm WHERE tblContractid = c.id AND termNo = 1);
+
+INSERT INTO tblOccupancy (isRepresentative, moveInDate, moveOutDate, tblContractid, tblResidentid)
+SELECT 1, '2026-01-01', NULL, c.id, '001200000001'
+FROM tblContract c
+WHERE c.code = 'HD-0123'
+  AND NOT EXISTS (SELECT 1 FROM tblOccupancy
+                  WHERE tblContractid = c.id AND tblResidentid = '001200000001');
+
+INSERT INTO tblIncidentTicket
+    (code, title, description, status, faultType, createdAt, tblRoomid, tblResidentid)
+SELECT 'TK-031', 'Leaking faucet', 'Bathroom faucet leaks continuously', 'NEW', 'NONE',
+       '2026-11-20', r.id, '001200000001'
+FROM tblRoom r JOIN tblBuilding b ON b.id = r.tblBuildingid
+WHERE b.code = 'BLD-SC' AND r.code = 'P.101'
+  AND NOT EXISTS (SELECT 1 FROM tblIncidentTicket WHERE code = 'TK-031');
 

@@ -209,8 +209,8 @@ public class SubmitPaymentProofFrm extends JFrame implements ActionListener {
         boolean updated = new InvoiceDAO().updateStatus(invoice.getId(), INVOICE_STATUS_WAITING);
         if (!updated) {
             JOptionPane.showMessageDialog(this,
-                    "Minh chứng đã được lưu nhưng chưa cập nhật được trạng thái hóa đơn. " +
-                            "Vui lòng báo chủ trọ kiểm tra hóa đơn.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                "Minh chứng đã được lưu nhưng chưa cập nhật được trạng thái hóa đơn. " +
+                "Vui lòng báo chủ trọ kiểm tra hóa đơn.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
 

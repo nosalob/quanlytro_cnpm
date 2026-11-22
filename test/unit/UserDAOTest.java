@@ -26,7 +26,7 @@ public class UserDAOTest {
             UserDAO dao = new UserDAO(con);
 
             User user = dao.checkLogin(
-                    createUser("tenant_test", "123456")
+                createUser("tenant_test", "123456")
             );
 
             Assert.assertNotNull(user);
@@ -43,7 +43,7 @@ public class UserDAOTest {
             UserDAO dao = new UserDAO(con);
 
             User user = dao.checkLogin(
-                    createUser("  tenant_test  ", "123456")
+                createUser("  tenant_test  ", "123456")
             );
 
             Assert.assertNotNull(user);
@@ -57,7 +57,7 @@ public class UserDAOTest {
             UserDAO dao = new UserDAO(con);
 
             User user = dao.checkLogin(
-                    createUser("tenant_test", "123456")
+                createUser("tenant_test", "123456")
             );
 
             Assert.assertNotNull(user);
@@ -67,8 +67,8 @@ public class UserDAOTest {
             Assert.assertNotNull(contracts);
             Assert.assertEquals(1, contracts.size());
             Assert.assertEquals(
-                    "TEST-HD-001",
-                    contracts.get(0).getCode()
+                "TEST-HD-001",
+                contracts.get(0).getCode()
             );
         }
     }
@@ -79,7 +79,7 @@ public class UserDAOTest {
             UserDAO dao = new UserDAO(con);
 
             User user = dao.checkLogin(
-                    createUser("tenant_test", "wrong_password")
+                createUser("tenant_test", "wrong_password")
             );
 
             Assert.assertNull(user);
@@ -92,7 +92,7 @@ public class UserDAOTest {
             UserDAO dao = new UserDAO(con);
 
             User user = dao.checkLogin(
-                    createUser("unknown_user", "123456")
+                createUser("unknown_user", "123456")
             );
 
             Assert.assertNull(user);

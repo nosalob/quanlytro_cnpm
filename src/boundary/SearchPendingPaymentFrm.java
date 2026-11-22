@@ -27,7 +27,7 @@ public class SearchPendingPaymentFrm extends JFrame implements ActionListener {
 
     public SearchPendingPaymentFrm(User user) {
         if (user == null || !"LANDLORD".equalsIgnoreCase(user.getRole()))
-            throw new IllegalArgumentException("Chỉ chủ trọ được tìm minh chứng");
+        throw new IllegalArgumentException("Chỉ chủ trọ được tìm minh chứng");
         this.user = user;
         setTitle("Tìm hóa đơn cần duyệt");
         setSize(1000, 580);
@@ -53,10 +53,10 @@ public class SearchPendingPaymentFrm extends JFrame implements ActionListener {
         add(filter, BorderLayout.NORTH);
         tblInvoice = new JTable(new DefaultTableModel(
                 new String[]{"Mã", "Tháng", "Năm", "Hạn", "Tổng tiền", "Trạng thái"}, 0) {
-            @Override
-            public boolean isCellEditable(int r, int c) {
-                return false;
-            }
+                @Override
+                public boolean isCellEditable(int r, int c) {
+                    return false;
+                }
         });
         tblInvoice.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         add(new JScrollPane(tblInvoice), BorderLayout.CENTER);
@@ -83,17 +83,17 @@ public class SearchPendingPaymentFrm extends JFrame implements ActionListener {
     private void btnSearchClick() {
         try {
             int buildingId = cboBuilding.getSelectedIndex() == 0 ? 0 :
-                    Integer.parseInt(String.valueOf(cboBuilding.getSelectedItem()));
+            Integer.parseInt(String.valueOf(cboBuilding.getSelectedItem()));
             int roomId = txtRoom.getText().trim().isEmpty() ? 0 : Integer.parseInt(txtRoom.getText().trim());
             if (roomId < 0) throw new IllegalArgumentException("Mã phòng không hợp lệ");
             invoices = new InvoiceDAO().searchPendingPayment(buildingId, roomId,
-                    txtTime.getText(), String.valueOf(cboStatus.getSelectedItem()));
+                txtTime.getText(), String.valueOf(cboStatus.getSelectedItem()));
             DefaultTableModel m = (DefaultTableModel) tblInvoice.getModel();
             m.setRowCount(0);
             DecimalFormat money = new DecimalFormat("#,##0.##");
             for (Invoice i : invoices)
-                m.addRow(new Object[]{i.getCode(), i.getMonth(), i.getYear(),
-                        i.getDueDate(), money.format(i.getTotalAmount()), i.getStatus()});
+            m.addRow(new Object[]{i.getCode(), i.getMonth(), i.getYear(),
+                    i.getDueDate(), money.format(i.getTotalAmount()), i.getStatus()});
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Mã phòng phải là số nguyên (ID).");
         } catch (IllegalArgumentException | IllegalStateException ex) {

@@ -40,7 +40,7 @@ public class InvoiceListFrm extends JFrame implements ActionListener {
         title.setFont(new Font("Arial", Font.BOLD, 20));
         add(title, BorderLayout.NORTH);
         DefaultTableModel model = new DefaultTableModel(
-                new String[]{"Mã hóa đơn", "Tháng", "Năm", "Hạn thanh toán", "Tổng tiền", "Trạng thái"}, 0) {
+            new String[]{"Mã hóa đơn", "Tháng", "Năm", "Hạn thanh toán", "Tổng tiền", "Trạng thái"}, 0) {
             @Override
             public boolean isCellEditable(int row, int col) {
                 return false;
@@ -67,14 +67,14 @@ public class InvoiceListFrm extends JFrame implements ActionListener {
     private void loadInvoices() {
         List<Integer> ids = new ArrayList<>();
         if (user != null && user.getContracts() != null)
-            for (Contract c : user.getContracts()) if (c != null) ids.add(c.getId());
+        for (Contract c : user.getContracts()) if (c != null) ids.add(c.getId());
         invoices = new InvoiceDAO().getInvoicesByContract(ids);
         DefaultTableModel model = (DefaultTableModel) tblInvoice.getModel();
         model.setRowCount(0);
         DecimalFormat money = new DecimalFormat("#,##0.##");
         for (Invoice i : invoices)
-            model.addRow(new Object[]{i.getCode(), i.getMonth(), i.getYear(),
-                    i.getDueDate(), money.format(i.getTotalAmount()), i.getStatus()});
+        model.addRow(new Object[]{i.getCode(), i.getMonth(), i.getYear(),
+                i.getDueDate(), money.format(i.getTotalAmount()), i.getStatus()});
         lblStatus.setText("Số hóa đơn: " + invoices.size());
     }
 

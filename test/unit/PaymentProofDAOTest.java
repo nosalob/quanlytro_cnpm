@@ -28,15 +28,15 @@ public class PaymentProofDAOTest {
                 PaymentProof proof = createPaymentProof();
 
                 boolean result = dao.addPaymentProof(
-                        proof, invoiceId, userId
+                    proof, invoiceId, userId
                 );
 
                 Assert.assertTrue(result);
 
                 String sql = "SELECT imageUrl, declaredAmount, " +
-                        "transferDate, status, tblUserid " +
-                        "FROM tblPaymentProof " +
-                        "WHERE tblInvoiceid = ? AND imageUrl = ?";
+                "transferDate, status, tblUserid " +
+                "FROM tblPaymentProof " +
+                "WHERE tblInvoiceid = ? AND imageUrl = ?";
 
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
                     ps.setInt(1, invoiceId);
@@ -46,29 +46,29 @@ public class PaymentProofDAOTest {
                         Assert.assertTrue(rs.next());
 
                         Assert.assertEquals(
-                                proof.getImageUrl(),
-                                rs.getString("imageUrl")
+                            proof.getImageUrl(),
+                            rs.getString("imageUrl")
                         );
 
                         Assert.assertEquals(
-                                proof.getDeclaredAmount(),
-                                rs.getDouble("declaredAmount"),
-                                0.01
+                            proof.getDeclaredAmount(),
+                            rs.getDouble("declaredAmount"),
+                            0.01
                         );
 
                         Assert.assertEquals(
-                                proof.getTransferDate(),
-                                rs.getDate("transferDate")
+                            proof.getTransferDate(),
+                            rs.getDate("transferDate")
                         );
 
                         Assert.assertEquals(
-                                "Chờ xác nhận",
-                                rs.getString("status")
+                            "Chờ xác nhận",
+                            rs.getString("status")
                         );
 
                         Assert.assertEquals(
-                                userId,
-                                rs.getInt("tblUserid")
+                            userId,
+                            rs.getInt("tblUserid")
                         );
                     }
                 }
@@ -88,7 +88,7 @@ public class PaymentProofDAOTest {
                 int userId = getTestUserId(con);
 
                 boolean result = dao.addPaymentProof(
-                        createPaymentProof(), -1, userId
+                    createPaymentProof(), -1, userId
                 );
 
                 Assert.assertFalse(result);
@@ -108,7 +108,7 @@ public class PaymentProofDAOTest {
                 int invoiceId = getTestInvoiceId(con);
 
                 boolean result = dao.addPaymentProof(
-                        createPaymentProof(), invoiceId, -1
+                    createPaymentProof(), invoiceId, -1
                 );
 
                 Assert.assertFalse(result);
@@ -139,8 +139,8 @@ public class PaymentProofDAOTest {
 
             try (ResultSet rs = ps.executeQuery()) {
                 Assert.assertTrue(
-                        "Không tìm thấy hóa đơn kiểm thử",
-                        rs.next()
+                    "Không tìm thấy hóa đơn kiểm thử",
+                    rs.next()
                 );
 
                 return rs.getInt("id");
@@ -156,8 +156,8 @@ public class PaymentProofDAOTest {
 
             try (ResultSet rs = ps.executeQuery()) {
                 Assert.assertTrue(
-                        "Không tìm thấy người dùng kiểm thử",
-                        rs.next()
+                    "Không tìm thấy người dùng kiểm thử",
+                    rs.next()
                 );
 
                 return rs.getInt("id");

@@ -21,7 +21,7 @@ public class InvoiceItemDAO extends DAO {
     public List<InvoiceItem> getInvoiceItem(int invoiceId) {
         List<InvoiceItem> items = new ArrayList<>();
         String sql = "SELECT id, itemType, description, quantity, unitPrice " +
-                "FROM tblInvoiceItem WHERE tblInvoiceid = ? ORDER BY id";
+        "FROM tblInvoiceItem WHERE tblInvoiceid = ? ORDER BY id";
 
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setInt(1, invoiceId);

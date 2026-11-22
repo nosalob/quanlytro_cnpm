@@ -33,7 +33,7 @@ public class ReviewPaymentProofFrm extends JFrame implements ActionListener {
 
     public ReviewPaymentProofFrm(User user, Invoice invoice) {
         if (user == null || !"LANDLORD".equalsIgnoreCase(user.getRole()))
-            throw new IllegalArgumentException("Chỉ chủ trọ được duyệt minh chứng");
+        throw new IllegalArgumentException("Chỉ chủ trọ được duyệt minh chứng");
         this.user = user;
         this.invoice = invoice;
         setTitle("Duyệt minh chứng - " + invoice.getCode());
@@ -51,10 +51,10 @@ public class ReviewPaymentProofFrm extends JFrame implements ActionListener {
         add(lblStatus, BorderLayout.NORTH);
         tblInvoiceItem = new JTable(new DefaultTableModel(
                 new String[]{"Loại", "Mô tả", "Số lượng", "Đơn giá", "Thành tiền"}, 0) {
-            @Override
-            public boolean isCellEditable(int r, int c) {
-                return false;
-            }
+                @Override
+                public boolean isCellEditable(int r, int c) {
+                    return false;
+                }
         });
         JPanel right = new JPanel(new BorderLayout(8, 8));
         pnlInfor = new JTextArea(7, 34);
@@ -67,7 +67,7 @@ public class ReviewPaymentProofFrm extends JFrame implements ActionListener {
         lblProofImage.setBorder(BorderFactory.createTitledBorder("Ảnh minh chứng"));
         right.add(new JScrollPane(lblProofImage), BorderLayout.CENTER);
         JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                new JScrollPane(tblInvoiceItem), right);
+            new JScrollPane(tblInvoiceItem), right);
         split.setResizeWeight(0.52);
         add(split, BorderLayout.CENTER);
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -90,20 +90,20 @@ public class ReviewPaymentProofFrm extends JFrame implements ActionListener {
         m.setRowCount(0);
         DecimalFormat money = new DecimalFormat("#,##0.##");
         for (InvoiceItem item : items)
-            m.addRow(new Object[]{item.getItemType(), item.getDescription(),
-                    item.getQuantity(), money.format(item.getUnitPrice()), money.format(item.getAmount())});
+        m.addRow(new Object[]{item.getItemType(), item.getDescription(),
+                item.getQuantity(), money.format(item.getUnitPrice()), money.format(item.getAmount())});
         if (proof == null) {
             pnlInfor.setText("Hóa đơn chưa có minh chứng thanh toán.");
             lblProofImage.setIcon(null);
             lblProofImage.setText("Chưa có hình ảnh minh chứng");
         } else {
             pnlInfor.setText("Mã minh chứng: " + proof.getId() +
-                    "\nSố tiền khai báo: " + money.format(proof.getDeclaredAmount()) +
-                    "\nNgày chuyển: " + proof.getTransferDate() +
-                    "\nNgày nộp: " + proof.getSubmittedAt() +
-                    "\nTrạng thái: " + proof.getStatus() +
-                    "\nGhi chú: " + proof.getNote() +
-                    "\nLý do từ chối: " + proof.getRejectReason());
+                "\nSố tiền khai báo: " + money.format(proof.getDeclaredAmount()) +
+                "\nNgày chuyển: " + proof.getTransferDate() +
+                "\nNgày nộp: " + proof.getSubmittedAt() +
+                "\nTrạng thái: " + proof.getStatus() +
+                "\nGhi chú: " + proof.getNote() +
+                "\nLý do từ chối: " + proof.getRejectReason());
             showImage(proof.getImageUrl());
         }
         boolean pending = proof != null && "Chờ xác nhận".equals(proof.getStatus());
@@ -130,8 +130,8 @@ public class ReviewPaymentProofFrm extends JFrame implements ActionListener {
             }
             double scale = Math.min(380.0 / original.getIconWidth(), 310.0 / original.getIconHeight());
             Image scaled = original.getImage().getScaledInstance(
-                    Math.max(1, (int) (original.getIconWidth() * scale)),
-                    Math.max(1, (int) (original.getIconHeight() * scale)), Image.SCALE_SMOOTH);
+                Math.max(1, (int) (original.getIconWidth() * scale)),
+                Math.max(1, (int) (original.getIconHeight() * scale)), Image.SCALE_SMOOTH);
             lblProofImage.setText("");
             lblProofImage.setIcon(new ImageIcon(scaled));
         } catch (RuntimeException ex) {
@@ -170,13 +170,13 @@ public class ReviewPaymentProofFrm extends JFrame implements ActionListener {
                 PaymentProofDAO proofs = new PaymentProofDAO(con);
                 InvoiceDAO invoices = new InvoiceDAO(con);
                 boolean updatedProof = approve ? proofs.confirm(proof.getId(), user.getId())
-                        : proofs.reject(proof.getId(), user.getId(), reason);
+                : proofs.reject(proof.getId(), user.getId(), reason);
                 boolean updatedInvoice = updatedProof && invoices.updateStatus(invoice.getId(),
-                        approve ? "Đã thanh toán" : "Chua thanh toan");
+                    approve ? "Đã thanh toán" : "Chua thanh toan");
                 if (!updatedProof || !updatedInvoice) {
                     con.rollback();
                     JOptionPane.showMessageDialog(this,
-                            "Không duyệt được. Minh chứng có thể đã được xử lý hoặc dữ liệu không hợp lệ.");
+                        "Không duyệt được. Minh chứng có thể đã được xử lý hoặc dữ liệu không hợp lệ.");
                     loadData();
                     return;
                 }

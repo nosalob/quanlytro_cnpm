@@ -15,8 +15,8 @@ public class PaymentProofDAO extends DAO {
 
     public boolean addPaymentProof(PaymentProof proof, int invoiceId, int userId) {
         String sql = "INSERT INTO tblPaymentProof " +
-                "(imageUrl, declaredAmount, transferDate, note, status, submittedAt, tblInvoiceid, tblUserid) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        "(imageUrl, declaredAmount, transferDate, note, status, submittedAt, tblInvoiceid, tblUserid) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setString(1, proof.getImageUrl());
             ps.setDouble(2, proof.getDeclaredAmount());
@@ -36,8 +36,8 @@ public class PaymentProofDAO extends DAO {
 
     public PaymentProof getProofByInvoice(int invoiceId) {
         String sql = "SELECT id, imageUrl, declaredAmount, transferDate, note, status, rejectReason, " +
-                "submittedAt, reviewedAt FROM tblPaymentProof WHERE tblInvoiceid = ? " +
-                "ORDER BY CASE WHEN status = 'Chờ xác nhận' THEN 0 ELSE 1 END, submittedAt DESC, id DESC LIMIT 1";
+        "submittedAt, reviewedAt FROM tblPaymentProof WHERE tblInvoiceid = ? " +
+        "ORDER BY CASE WHEN status = 'Chờ xác nhận' THEN 0 ELSE 1 END, submittedAt DESC, id DESC LIMIT 1";
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setInt(1, invoiceId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -71,8 +71,8 @@ public class PaymentProofDAO extends DAO {
 
     private boolean changeProofStatus(int id, int reviewerId, String status, String reason) {
         String sql = "UPDATE tblPaymentProof p SET p.status=?, p.rejectReason=?, p.reviewedAt=CURRENT_DATE() " +
-                "WHERE p.id=? AND p.status='Chờ xác nhận' " +
-                "AND EXISTS (SELECT 1 FROM tblUser u WHERE u.id=? AND u.role='LANDLORD' AND u.status='ACTIVE')";
+        "WHERE p.id=? AND p.status='Chờ xác nhận' " +
+        "AND EXISTS (SELECT 1 FROM tblUser u WHERE u.id=? AND u.role='LANDLORD' AND u.status='ACTIVE')";
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setString(1, status);
             ps.setString(2, reason);

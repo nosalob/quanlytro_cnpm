@@ -22,8 +22,8 @@ public class LandlordInvoiceDAOTest {
     @Test
     public void testSearchByBuildingRoomAndTime() throws Exception {
         try (Connection con = DBConnection.getConnection();
-             var ps = con.prepareStatement("SELECT r.id, r.tblBuildingid FROM tblRoom r WHERE r.code='TEST-P101' LIMIT 1");
-             var rs = ps.executeQuery()) {
+            var ps = con.prepareStatement("SELECT r.id, r.tblBuildingid FROM tblRoom r WHERE r.code='TEST-P101' LIMIT 1");
+            var rs = ps.executeQuery()) {
             Assert.assertTrue(rs.next());
             int room = rs.getInt(1), building = rs.getInt(2);
             List<Invoice> found = new InvoiceDAO(con).searchPendingPayment(building, room, "09/2026", "Tất cả");

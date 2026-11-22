@@ -26,7 +26,7 @@ public class LandlordUserDAOTest {
             Assert.assertNotNull(user);
             Assert.assertEquals("LANDLORD", user.getRole());
             try (Statement st = con.createStatement();
-                 ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM tblContract")) {
+                ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM tblContract")) {
                 Assert.assertTrue(rs.next());
                 Assert.assertEquals(rs.getInt(1), user.getContracts().size());
             }

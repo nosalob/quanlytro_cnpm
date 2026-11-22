@@ -26,14 +26,14 @@ public class TenantHomeFrm extends JFrame implements ActionListener {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(24, 30, 24, 30));
 
         String fullName = user != null && user.getFullName() != null
-                ? user.getFullName() : "Người thuê";
+        ? user.getFullName() : "Người thuê";
         JLabel lblWelcome = new JLabel("Xin chào, " + fullName, SwingConstants.CENTER);
         lblWelcome.setFont(new Font("Arial", Font.BOLD, 21));
         mainPanel.add(lblWelcome, BorderLayout.NORTH);
 
         JLabel lblDescription = new JLabel(
-                "Quản lý hóa đơn và minh chứng thanh toán của bạn.",
-                SwingConstants.CENTER);
+            "Quản lý hóa đơn và minh chứng thanh toán của bạn.",
+            SwingConstants.CENTER);
         lblDescription.setFont(new Font("Arial", Font.PLAIN, 14));
         mainPanel.add(lblDescription, BorderLayout.CENTER);
 

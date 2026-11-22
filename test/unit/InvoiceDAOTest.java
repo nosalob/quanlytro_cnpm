@@ -23,7 +23,7 @@ public class InvoiceDAOTest {
             int contractId = getTestContractId(con);
 
             List<Invoice> invoices = dao.getInvoicesByContract(
-                    Collections.singletonList(contractId)
+                Collections.singletonList(contractId)
             );
 
             Assert.assertNotNull(invoices);
@@ -31,16 +31,16 @@ public class InvoiceDAOTest {
 
             Assert.assertEquals("TEST-INV-10", invoices.get(0).getCode());
             Assert.assertEquals(
-                    3512500.0,
-                    invoices.get(0).getTotalAmount(),
-                    0.01
+                3512500.0,
+                invoices.get(0).getTotalAmount(),
+                0.01
             );
 
             Assert.assertEquals("TEST-INV-09", invoices.get(1).getCode());
             Assert.assertEquals(
-                    3430000.0,
-                    invoices.get(1).getTotalAmount(),
-                    0.01
+                3430000.0,
+                invoices.get(1).getTotalAmount(),
+                0.01
             );
         }
     }
@@ -51,7 +51,7 @@ public class InvoiceDAOTest {
             InvoiceDAO dao = new InvoiceDAO(con);
 
             List<Invoice> invoices = dao.getInvoicesByContract(
-                    Collections.emptyList()
+                Collections.emptyList()
             );
 
             Assert.assertNotNull(invoices);
@@ -69,7 +69,7 @@ public class InvoiceDAOTest {
                 int invoiceId = getTestInvoiceId(con);
 
                 boolean result = dao.updateStatus(
-                        invoiceId, "Chờ xác nhận"
+                    invoiceId, "Chờ xác nhận"
                 );
 
                 Assert.assertTrue(result);
@@ -82,8 +82,8 @@ public class InvoiceDAOTest {
                     try (ResultSet rs = ps.executeQuery()) {
                         Assert.assertTrue(rs.next());
                         Assert.assertEquals(
-                                "Chờ xác nhận",
-                                rs.getString("status")
+                            "Chờ xác nhận",
+                            rs.getString("status")
                         );
                     }
                 }
@@ -102,7 +102,7 @@ public class InvoiceDAOTest {
                 InvoiceDAO dao = new InvoiceDAO(con);
 
                 boolean result = dao.updateStatus(
-                        -1, "Chờ xác nhận"
+                    -1, "Chờ xác nhận"
                 );
 
                 Assert.assertFalse(result);
@@ -120,8 +120,8 @@ public class InvoiceDAOTest {
 
             try (ResultSet rs = ps.executeQuery()) {
                 Assert.assertTrue(
-                        "Không tìm thấy hợp đồng kiểm thử",
-                        rs.next()
+                    "Không tìm thấy hợp đồng kiểm thử",
+                    rs.next()
                 );
 
                 return rs.getInt("id");
@@ -137,8 +137,8 @@ public class InvoiceDAOTest {
 
             try (ResultSet rs = ps.executeQuery()) {
                 Assert.assertTrue(
-                        "Không tìm thấy hóa đơn kiểm thử",
-                        rs.next()
+                    "Không tìm thấy hóa đơn kiểm thử",
+                    rs.next()
                 );
 
                 return rs.getInt("id");
