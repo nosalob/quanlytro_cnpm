@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build project",
+            "type": "shell",
+            "command": "New-Item -ItemType Directory -Force out | Out-Null; javac -encoding UTF-8 -cp 'lib/mysql-connector-j-26.10.0.jar' -sourcepath src -d out src/Main.java",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": "$javac",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Run project",
+            "type": "shell",
+            "command": "java -cp 'out;lib/mysql-connector-j-26.10.0.jar' Main",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "Build project",
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        }
+    ]
+}

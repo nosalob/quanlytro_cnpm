@@ -8,7 +8,6 @@ import java.util.List;
 public class Contract implements Serializable {
     private int id;
     private String code;
-<<<<<<< HEAD
     private float depositAmount;
     private String status = "ACTIVE";
     private LocalDate createdAt;
@@ -16,10 +15,6 @@ public class Contract implements Serializable {
     private String terminationType;
     private List<ContractTerm> terms = new ArrayList<>();
     private List<Occupancy> occupancies = new ArrayList<>();
-=======
-    private double depositAmount;
-    private String status;
->>>>>>> 6f87f1b33f69b96e935fd7a7829142150423a882
 
     public Contract() {
     }
@@ -40,7 +35,6 @@ public class Contract implements Serializable {
         this.code = code;
     }
 
-<<<<<<< HEAD
     public float getDepositAmount() {
         return depositAmount;
     }
@@ -86,21 +80,4 @@ public class Contract implements Serializable {
     public void setOccupancies(List<Occupancy> occupancies) {
         this.occupancies = occupancies == null ? new ArrayList<>() : occupancies;
     }
-=======
-    public double getDepositAmount() {
-        return depositAmount;
-    }
-
-    public void setDepositAmount(double depositAmount) {
-        this.depositAmount = depositAmount;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
->>>>>>> 6f87f1b33f69b96e935fd7a7829142150423a882
 }

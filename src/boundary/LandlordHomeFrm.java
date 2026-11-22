@@ -9,12 +9,8 @@ public class LandlordHomeFrm extends JFrame implements ActionListener {
     private final User user;
     private final JButton btnManageContract = new JButton("Quản lý hợp đồng");
     private final JButton btnInvoiceList = new JButton("Danh sách hóa đơn");
-<<<<<<< HEAD
     private final JButton btnIncidentTicket = new JButton("Báo cáo sự cố");
     private final JButton btnVerifyMeterReading = new JButton("Duyệt chỉ số điện nước");
-=======
-    private final JButton btnIncidentTicket = new JButton("Sự cố");
->>>>>>> 6f87f1b33f69b96e935fd7a7829142150423a882
     private final JButton btnLogout = new JButton("Đăng xuất");
 
     public LandlordHomeFrm(User user) {
@@ -29,7 +25,6 @@ public class LandlordHomeFrm extends JFrame implements ActionListener {
         root.setBorder(BorderFactory.createEmptyBorder(24, 24, 24, 24));
         JLabel welcome = new JLabel("Xin chào, " + user.getFullName(), SwingConstants.CENTER);
         welcome.setFont(new Font("Arial", Font.BOLD, 20));
-<<<<<<< HEAD
         root.add(welcome, BorderLayout.NORTH);
 
         JPanel buttons = new JPanel();
@@ -53,16 +48,6 @@ public class LandlordHomeFrm extends JFrame implements ActionListener {
         btnInvoiceList.addActionListener(this);
         btnIncidentTicket.addActionListener(this);
         btnVerifyMeterReading.addActionListener(this);
-=======
-        root.add(welcome, BorderLayout.CENTER);
-        JPanel buttons = new JPanel(new FlowLayout());
-        buttons.add(btnInvoiceList);
-        buttons.add(btnIncidentTicket);
-        buttons.add(btnLogout);
-        root.add(buttons, BorderLayout.SOUTH);
-        btnInvoiceList.addActionListener(this);
-        btnIncidentTicket.addActionListener(this);
->>>>>>> 6f87f1b33f69b96e935fd7a7829142150423a882
         btnLogout.addActionListener(this);
         setContentPane(root);
     }
@@ -78,12 +63,9 @@ public class LandlordHomeFrm extends JFrame implements ActionListener {
         } else if (e.getSource() == btnIncidentTicket) {
             new SearchTicketFrm(user).setVisible(true);
             dispose();
-<<<<<<< HEAD
         } else if (e.getSource() == btnVerifyMeterReading) {
             new SearchMeterReadingFrm(user).setVisible(true);
             dispose();
-=======
->>>>>>> 6f87f1b33f69b96e935fd7a7829142150423a882
         } else if (e.getSource() == btnLogout) {
             new LoginFrm().setVisible(true);
             dispose();

@@ -1,6 +1,5 @@
 package entity;
 
-<<<<<<< HEAD
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,17 +14,10 @@ public class Room implements Serializable {
     private String status;
     private Building building;
     private List<Contract> contracts = new ArrayList<>();
-=======
-public class Room {
-    private int id;
-    private String code;
-    private Building building;
->>>>>>> 6f87f1b33f69b96e935fd7a7829142150423a882
 
     public Room() {
     }
 
-<<<<<<< HEAD
     public Room(String code, float area, String status) {
         this.code = code;
         this.area = area;
@@ -86,12 +78,4 @@ public class Room {
     public void setContracts(List<Contract> contracts) {
         this.contracts = contracts;
     }
-=======
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getCode() { return code; }
-    public void setCode(String code) { this.code = code; }
-    public Building getBuilding() { return building; }
-    public void setBuilding(Building building) { this.building = building; }
->>>>>>> 6f87f1b33f69b96e935fd7a7829142150423a882
 }
