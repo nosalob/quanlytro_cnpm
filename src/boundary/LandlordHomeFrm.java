@@ -9,6 +9,7 @@ import java.awt.event.*;
 public class LandlordHomeFrm extends JFrame implements ActionListener {
     private final User user;
     private final JButton btnInvoiceList = new JButton("Danh sách hóa đơn");
+    private final JButton btnIncidentTicket = new JButton("Sự cố");
     private final JButton btnLogout = new JButton("Đăng xuất");
 
     public LandlordHomeFrm(User user) {
@@ -26,9 +27,11 @@ public class LandlordHomeFrm extends JFrame implements ActionListener {
         root.add(welcome, BorderLayout.CENTER);
         JPanel buttons = new JPanel(new FlowLayout());
         buttons.add(btnInvoiceList);
+        buttons.add(btnIncidentTicket);
         buttons.add(btnLogout);
         root.add(buttons, BorderLayout.SOUTH);
         btnInvoiceList.addActionListener(this);
+        btnIncidentTicket.addActionListener(this);
         btnLogout.addActionListener(this);
         setContentPane(root);
     }
@@ -37,6 +40,9 @@ public class LandlordHomeFrm extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnInvoiceList) {
             new InvoiceListFrm(user).setVisible(true);
+            dispose();
+        } else if (e.getSource() == btnIncidentTicket) {
+            new SearchTicketFrm(user).setVisible(true);
             dispose();
         } else if (e.getSource() == btnLogout) {
             new LoginFrm().setVisible(true);
