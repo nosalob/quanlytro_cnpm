@@ -34,7 +34,7 @@ public class SearchMeterReadingFrm extends JFrame implements ActionListener{
     private SearchMeterReadingFrm mainFrm;
 
     public SearchMeterReadingFrm(User user){
-        super("Search meter readings to verify");
+        super("Tìm chỉ số điện nước cần xác minh");
         this.user = user;
         mainFrm = this;
         listReading = new ArrayList<MeterReading>();
@@ -47,7 +47,7 @@ public class SearchMeterReadingFrm extends JFrame implements ActionListener{
         pnMain.setLayout(new BoxLayout(pnMain,BoxLayout.Y_AXIS));
         pnMain.add(Box.createRigidArea(new Dimension(0,10)));
 
-        JLabel lblHome = new JLabel("Search meter readings to verify");
+        JLabel lblHome = new JLabel("Tìm chỉ số điện nước cần xác minh");
         lblHome.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblHome.setFont (lblHome.getFont ().deriveFont (20.0f));
         pnMain.add(lblHome);
@@ -56,14 +56,14 @@ public class SearchMeterReadingFrm extends JFrame implements ActionListener{
         txtBuilding = new JTextField();
         txtMonth = new JTextField();
         txtStatus = new JTextField(MeterReading.STATUS_PENDING);
-        btnSearch = new JButton("Search");
+        btnSearch = new JButton("Tìm kiếm");
         btnSearch.addActionListener(this);
 
         JPanel pn1 = new JPanel();
         pn1.setLayout(new GridLayout(4,2));
-        pn1.add(new JLabel("Building (code or name): "));		pn1.add(txtBuilding);
-        pn1.add(new JLabel("Month (MM/yyyy): "));				pn1.add(txtMonth);
-        pn1.add(new JLabel("Status (PENDING, APPROVED, REJECTED, VERIFYING): "));	pn1.add(txtStatus);
+        pn1.add(new JLabel("Tòa nhà (mã hoặc tên): "));		pn1.add(txtBuilding);
+        pn1.add(new JLabel("Tháng (MM/yyyy): "));				pn1.add(txtMonth);
+        pn1.add(new JLabel("Trạng thái (PENDING, APPROVED, REJECTED, VERIFYING): "));	pn1.add(txtStatus);
         pn1.add(new JLabel(""));								pn1.add(btnSearch);
         pnMain.add(pn1);
         pnMain.add(Box.createRigidArea(new Dimension(0,10)));
@@ -90,7 +90,7 @@ public class SearchMeterReadingFrm extends JFrame implements ActionListener{
 
         JPanel pnButton = new JPanel();
         pnButton.setLayout(new GridLayout(1, 2, 10, 0));
-        btnBack = new JButton("Back");
+        btnBack = new JButton("Quay lại");
         pnButton.add(new JLabel(""));
         pnButton.add(btnBack);
         pnMain.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -125,7 +125,7 @@ public class SearchMeterReadingFrm extends JFrame implements ActionListener{
             }
         }
         if(building == null) {
-            JOptionPane.showMessageDialog(this, "The building does not exist!");
+            JOptionPane.showMessageDialog(this, "Tòa nhà không tồn tại.");
             return;
         }
 
@@ -138,21 +138,21 @@ public class SearchMeterReadingFrm extends JFrame implements ActionListener{
             if(month < 1 || month > 12)
             throw new NumberFormatException();
         }catch(Exception ex) {
-            JOptionPane.showMessageDialog(this, "The month must be in the format MM/yyyy!");
+            JOptionPane.showMessageDialog(this, "Tháng phải có định dạng MM/yyyy.");
             return;
         }
 
         String status = txtStatus.getText().trim().toUpperCase();
         if(!(status.equals(MeterReading.STATUS_PENDING) || status.equals(MeterReading.STATUS_APPROVED)
                 || status.equals(MeterReading.STATUS_REJECTED) || status.equals(MeterReading.STATUS_VERIFYING))) {
-            JOptionPane.showMessageDialog(this, "The status must be PENDING, APPROVED, REJECTED or VERIFYING!");
+            JOptionPane.showMessageDialog(this, "Trạng thái phải là PENDING, APPROVED, REJECTED hoặc VERIFYING.");
             return;
         }
 
         MeterReadingDAO mrd = new MeterReadingDAO();
         listReading = mrd.searchMeterReading(building.getId(), month, year, status);
 
-        String[] columnNames = {"Id", "Room", "Type", "Month/Year", "Previous", "Current", "Status"};
+        String[] columnNames = {"Mã", "Phòng", "Loại", "Tháng/Năm", "Chỉ số cũ", "Chỉ số mới", "Trạng thái"};
         String[][] value = new String[listReading.size()][7];
         for(int i=0; i<listReading.size(); i++){
             MeterReading mr = listReading.get(i);
@@ -175,7 +175,7 @@ public class SearchMeterReadingFrm extends JFrame implements ActionListener{
         tblResult.setModel(tableModel);
 
         if(listReading.size() == 0)
-        JOptionPane.showMessageDialog(this, "There is no meter reading to verify!");
+        JOptionPane.showMessageDialog(this, "Không có chỉ số điện nước nào cần xác minh.");
     }
 
     private void tblResultClick(int r) {

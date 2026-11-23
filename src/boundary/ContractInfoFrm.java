@@ -16,7 +16,7 @@ public class ContractInfoFrm extends JFrame implements ActionListener {
     private JButton btnNext, btnBack;
 
     public ContractInfoFrm(User u, Building building, Room room) {
-        super("Create Contract - Bước 2: Thông tin hợp đồng");
+        super("Tạo hợp đồng - Bước 2: Thông tin hợp đồng");
         this.u = u;
         this.building = building;
         this.room = room;
@@ -50,8 +50,8 @@ public class ContractInfoFrm extends JFrame implements ActionListener {
         gbc.gridx = 1; add(txtDeposit, gbc);
 
         JPanel pnlBtn = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        btnBack = new JButton("Back"); btnBack.addActionListener(this);
-        btnNext = new JButton("Next"); btnNext.addActionListener(this);
+        btnBack = new JButton("Quay lại"); btnBack.addActionListener(this);
+        btnNext = new JButton("Tiếp theo"); btnNext.addActionListener(this);
         pnlBtn.add(btnBack); pnlBtn.add(btnNext);
         gbc.gridx = 1; gbc.gridy = 5; add(pnlBtn, gbc);
     }

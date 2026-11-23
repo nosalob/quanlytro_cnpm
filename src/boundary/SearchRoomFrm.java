@@ -21,7 +21,7 @@ public class SearchRoomFrm extends JFrame implements ActionListener {
     private DefaultTableModel tableModel;
 
     public SearchRoomFrm(User u) {
-        super("Create Contract - Bước 1: Chọn phòng trống");
+        super("Tạo hợp đồng - Bước 1: Chọn phòng trống");
         this.u = u;
         setSize(700, 420);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,7 +38,7 @@ public class SearchRoomFrm extends JFrame implements ActionListener {
         txtKeyword = new JTextField(12);
         pnlTop.add(txtKeyword);
 
-        btnSearch = new JButton("Search");
+        btnSearch = new JButton("Tìm kiếm");
         btnSearch.addActionListener(this);
         pnlTop.add(btnSearch);
         add(pnlTop, BorderLayout.NORTH);
@@ -54,9 +54,9 @@ public class SearchRoomFrm extends JFrame implements ActionListener {
         add(new JScrollPane(tblResult), BorderLayout.CENTER);
 
         JPanel pnlBottom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        btnBack = new JButton("Back");
+        btnBack = new JButton("Quay lại");
         btnBack.addActionListener(this);
-        btnNext = new JButton("Next");
+        btnNext = new JButton("Tiếp theo");
         btnNext.addActionListener(this);
         pnlBottom.add(btnBack);
         pnlBottom.add(btnNext);

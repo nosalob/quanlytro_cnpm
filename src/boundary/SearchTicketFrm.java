@@ -22,7 +22,7 @@ public class SearchTicketFrm extends JFrame implements ActionListener {
     private final JButton btnBack = new JButton("Quay lại");
     private final JLabel lblStatus = new JLabel(" ");
     private final DefaultTableModel tableModel = new DefaultTableModel(
-        new String[]{"Mã ticket", "Phòng", "Tiêu đề", "Trạng thái", "Ngày tạo"}, 0) {
+        new String[]{"Mã sự cố", "Phòng", "Tiêu đề", "Trạng thái", "Ngày tạo"}, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -80,13 +80,13 @@ public class SearchTicketFrm extends JFrame implements ActionListener {
             tableModel.addRow(new Object[]{t.getCode(), t.getRoom().getCode(), t.getTitle(),
                     t.getStatus(), t.getCreatedAt()});
         }
-        lblStatus.setText(tickets.isEmpty() ? "Không tìm thấy ticket" : "Tìm thấy " + tickets.size() + " ticket");
+        lblStatus.setText(tickets.isEmpty() ? "Không tìm thấy sự cố" : "Tìm thấy " + tickets.size() + " sự cố");
     }
 
     public void btnTicketItemClick() {
         int row = tblTicket.getSelectedRow();
         if (row < 0) {
-            lblStatus.setText("Hãy chọn một ticket");
+            lblStatus.setText("Hãy chọn một sự cố.");
             return;
         }
         new TicketDetailFrm(user, tickets.get(row)).setVisible(true);
