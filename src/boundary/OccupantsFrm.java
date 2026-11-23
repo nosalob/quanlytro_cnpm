@@ -24,7 +24,7 @@ public class OccupantsFrm extends JFrame implements ActionListener {
     private JButton btnAdd, btnRemove, btnNext, btnBack;
 
     public OccupantsFrm(User u, Building building, Room room, Contract contract) {
-        super("Create Contract - Bước 4: Danh sách người ở cùng");
+        super("Tạo hợp đồng - Bước 4: Danh sách người ở cùng");
         this.u = u;
         this.building = building;
         this.room = room;
@@ -57,14 +57,14 @@ public class OccupantsFrm extends JFrame implements ActionListener {
         pnlForm.add(new JLabel("Ngày sinh:"));  txtDob = new JTextField("2000-01-01"); pnlForm.add(txtDob);
         pnlForm.add(new JLabel("Quê quán:"));   txtHometown = new JTextField("Hà Nội"); pnlForm.add(txtHometown);
 
-        btnAdd = new JButton("Add"); btnAdd.addActionListener(this);
-        btnRemove = new JButton("Remove Selected"); btnRemove.addActionListener(this);
+        btnAdd = new JButton("Thêm"); btnAdd.addActionListener(this);
+        btnRemove = new JButton("Xóa người đã chọn"); btnRemove.addActionListener(this);
         pnlForm.add(btnAdd); pnlForm.add(btnRemove);
         pnlSouth.add(pnlForm, BorderLayout.CENTER);
 
         JPanel pnlNav = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        btnBack = new JButton("Back"); btnBack.addActionListener(this);
-        btnNext = new JButton("Next"); btnNext.addActionListener(this);
+        btnBack = new JButton("Quay lại"); btnBack.addActionListener(this);
+        btnNext = new JButton("Tiếp theo"); btnNext.addActionListener(this);
         pnlNav.add(btnBack); pnlNav.add(btnNext);
         pnlSouth.add(pnlNav, BorderLayout.SOUTH);
 

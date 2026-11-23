@@ -32,7 +32,7 @@ public class CreateCompensationFrm extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        lblTicketInfo.setText("Ticket " + ticket.getCode() + " - Phòng " + ticket.getRoom().getCode());
+        lblTicketInfo.setText("Sự cố " + ticket.getCode() + " - Phòng " + ticket.getRoom().getCode());
 
         // lấy hợp đồng đang hiệu lực và số dư cọc
         ContractDAO contractDAO = new ContractDAO();

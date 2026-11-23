@@ -25,39 +25,39 @@ public class RequestVerificationFrm extends JFrame implements ActionListener{
     private MeterReading mr;
 
     public RequestVerificationFrm(MeterReading mr){
-        super("Request verification");
+        super("Gửi yêu cầu xác minh");
         this.mr = mr;
 
         txtReason = new JTextArea(3, 30);
         txtRequest = new JTextArea(3, 30);
-        btnSubmit = new JButton("Submit");
+        btnSubmit = new JButton("Gửi yêu cầu");
 
         JPanel pnMain = new JPanel();
         pnMain.setSize(this.getSize().width-5, this.getSize().height-20);
         pnMain.setLayout(new BoxLayout(pnMain,BoxLayout.Y_AXIS));
         pnMain.add(Box.createRigidArea(new Dimension(0,10)));
 
-        JLabel lblHome = new JLabel("Request verification");
+        JLabel lblHome = new JLabel("Gửi yêu cầu xác minh");
         lblHome.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblHome.setFont (lblHome.getFont ().deriveFont (20.0f));
         pnMain.add(lblHome);
         pnMain.add(Box.createRigidArea(new Dimension(0,15)));
 
         JLabel lblInfo = new JLabel("Room " + mr.getRoom().getCode() + ", " + mr.getType() + " "
-            + mr.getMonth() + "/" + mr.getYear() + ", current value " + mr.getCurrentValue());
+            + mr.getMonth() + "/" + mr.getYear() + ", chỉ số hiện tại " + mr.getCurrentValue());
         lblInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
         pnMain.add(lblInfo);
         pnMain.add(Box.createRigidArea(new Dimension(0,15)));
 
         JPanel content = new JPanel();
         content.setLayout(new GridLayout(2,2));
-        content.add(new JLabel("Reason:"));				content.add(new JScrollPane(txtReason));
-        content.add(new JLabel("Request:"));			content.add(new JScrollPane(txtRequest));
+        content.add(new JLabel("Lý do:"));				content.add(new JScrollPane(txtReason));
+        content.add(new JLabel("Nội dung yêu cầu:"));	content.add(new JScrollPane(txtRequest));
         pnMain.add(content);
 
         JPanel pnButton = new JPanel();
         pnButton.setLayout(new FlowLayout());
-        btnBack = new JButton("Back");
+        btnBack = new JButton("Quay lại");
         pnButton.add(btnSubmit);
         pnButton.add(btnBack);
         pnMain.add(pnButton);
@@ -85,7 +85,7 @@ public class RequestVerificationFrm extends JFrame implements ActionListener{
         String reason = txtReason.getText().trim();
         String request = txtRequest.getText().trim();
         if(reason.length() == 0 || request.length() == 0) {
-            JOptionPane.showMessageDialog(this, "Please enter the reason and the request!");
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập lý do và nội dung yêu cầu.");
             return;
         }
 
@@ -104,7 +104,7 @@ public class RequestVerificationFrm extends JFrame implements ActionListener{
             this.dispose();
         }else {
             rvd.rollback();
-            JOptionPane.showMessageDialog(this, "Cannot save the verification request!");
+            JOptionPane.showMessageDialog(this, "Không thể lưu yêu cầu xác minh.");
         }
     }
 }

@@ -18,7 +18,7 @@ public class ContractConfirmFrm extends JFrame implements ActionListener {
     private JButton btnConfirm, btnBack;
 
     public ContractConfirmFrm(User u, Building building, Room room, Contract contract) {
-        super("Create Contract - Bước 5: Xác nhận và Hoàn tất");
+        super("Tạo hợp đồng - Bước 5: Xác nhận và hoàn tất");
         this.u = u;
         this.building = building;
         this.room = room;
@@ -45,8 +45,8 @@ public class ContractConfirmFrm extends JFrame implements ActionListener {
         add(new JScrollPane(txtSummary), BorderLayout.CENTER);
 
         JPanel pnlBottom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        btnBack = new JButton("Back"); btnBack.addActionListener(this);
-        btnConfirm = new JButton("Confirm"); btnConfirm.addActionListener(this);
+        btnBack = new JButton("Quay lại"); btnBack.addActionListener(this);
+        btnConfirm = new JButton("Xác nhận"); btnConfirm.addActionListener(this);
         pnlBottom.add(btnBack);
         pnlBottom.add(btnConfirm);
         add(pnlBottom, BorderLayout.SOUTH);

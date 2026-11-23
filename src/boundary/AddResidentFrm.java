@@ -44,8 +44,8 @@ public class AddResidentFrm extends JFrame implements ActionListener {
         txtNote = new JTextField(18); gbc.gridx = 1; add(txtNote, gbc);
 
         JPanel pnlBtn = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        btnSave = new JButton("Save"); btnSave.addActionListener(this);
-        btnCancel = new JButton("Cancel"); btnCancel.addActionListener(this);
+        btnSave = new JButton("Lưu"); btnSave.addActionListener(this);
+        btnCancel = new JButton("Hủy"); btnCancel.addActionListener(this);
         pnlBtn.add(btnSave); pnlBtn.add(btnCancel);
         gbc.gridx = 1; gbc.gridy = 6; add(pnlBtn, gbc);
     }

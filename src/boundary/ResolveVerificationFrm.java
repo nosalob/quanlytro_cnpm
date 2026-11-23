@@ -30,7 +30,7 @@ public class ResolveVerificationFrm extends JFrame implements ActionListener{
     private ReadingVerification verification;
 
     public ResolveVerificationFrm(MeterReading mr){
-        super("Resolve verification");
+        super("Xử lý yêu cầu xác minh");
         this.mr = mr;
 
         //get the open verification of the reading
@@ -41,15 +41,15 @@ public class ResolveVerificationFrm extends JFrame implements ActionListener{
         lblVerificationInfo = new JLabel();
         txtActualValue = new JTextField(15);
         txtConclusion = new JTextArea(3, 30);
-        btnResolve = new JButton("Resolve");
-        btnBack = new JButton("Back");
+        btnResolve = new JButton("Xử lý");
+        btnBack = new JButton("Quay lại");
 
         JPanel pnMain = new JPanel();
         pnMain.setSize(this.getSize().width-5, this.getSize().height-20);
         pnMain.setLayout(new BoxLayout(pnMain,BoxLayout.Y_AXIS));
         pnMain.add(Box.createRigidArea(new Dimension(0,10)));
 
-        JLabel lblHome = new JLabel("Resolve verification");
+        JLabel lblHome = new JLabel("Xử lý yêu cầu xác minh");
         lblHome.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblHome.setFont (lblHome.getFont ().deriveFont (20.0f));
         pnMain.add(lblHome);
@@ -61,8 +61,8 @@ public class ResolveVerificationFrm extends JFrame implements ActionListener{
 
         JPanel content = new JPanel();
         content.setLayout(new GridLayout(2,2));
-        content.add(new JLabel("Actual value:"));		content.add(txtActualValue);
-        content.add(new JLabel("Conclusion:"));			content.add(new JScrollPane(txtConclusion));
+        content.add(new JLabel("Giá trị thực tế:"));		content.add(txtActualValue);
+        content.add(new JLabel("Kết luận:"));			content.add(new JScrollPane(txtConclusion));
         pnMain.add(content);
 
         JPanel pnButton = new JPanel();
@@ -89,9 +89,9 @@ public class ResolveVerificationFrm extends JFrame implements ActionListener{
 
     private void initForm() {
         lblRequestInfo.setText("Reading: room " + mr.getRoom().getCode() + ", " + mr.getType() + " "
-            + mr.getMonth() + "/" + mr.getYear() + ", current value " + mr.getCurrentValue());
+            + mr.getMonth() + "/" + mr.getYear() + ", chỉ số hiện tại " + mr.getCurrentValue());
         if(verification == null) {
-            lblVerificationInfo.setText("There is no open verification request for this reading!");
+            lblVerificationInfo.setText("Chỉ số này không có yêu cầu xác minh đang chờ xử lý.");
             btnResolve.setEnabled(false);
         }else {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -117,12 +117,12 @@ public class ResolveVerificationFrm extends JFrame implements ActionListener{
         try {
             actualValue = Double.parseDouble(txtActualValue.getText().trim());
         }catch(Exception ex) {
-            JOptionPane.showMessageDialog(this, "The actual value must be a number!");
+            JOptionPane.showMessageDialog(this, "Giá trị thực tế phải là một số.");
             return;
         }
         String conclusion = txtConclusion.getText().trim();
         if(conclusion.length() == 0) {
-            JOptionPane.showMessageDialog(this, "Please enter the conclusion!");
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập kết luận.");
             return;
         }
         verification.setResult(conclusion);
@@ -135,12 +135,12 @@ public class ResolveVerificationFrm extends JFrame implements ActionListener{
             && mrd.updateValue(mr.getId(), actualValue)
             && mrd.updateStatus(mr.getId(), MeterReading.STATUS_PENDING)) {
             rvd.commit();
-            JOptionPane.showMessageDialog(this, "The verification is successfully resolved!");
+            JOptionPane.showMessageDialog(this, "Đã xử lý yêu cầu xác minh.");
             (new SearchMeterReadingFrm(mr.getReviewedBy())).setVisible(true);
             this.dispose();
         }else {
             rvd.rollback();
-            JOptionPane.showMessageDialog(this, "Cannot save the result of the verification!");
+            JOptionPane.showMessageDialog(this, "Không thể lưu kết quả xác minh.");
         }
     }
 }

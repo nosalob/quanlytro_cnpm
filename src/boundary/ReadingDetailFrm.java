@@ -27,7 +27,7 @@ public class ReadingDetailFrm extends JFrame implements ActionListener{
     private MeterReading mr;
 
     public ReadingDetailFrm(MeterReading mr){
-        super("Meter reading detail");
+        super("Chi tiết chỉ số điện nước");
 
         //get the full information of the reading, keep the reviewer transferred from the previous interface
         User reviewer = mr.getReviewedBy();
@@ -46,17 +46,17 @@ public class ReadingDetailFrm extends JFrame implements ActionListener{
         lblEvidenceImage = new JLabel("", JLabel.CENTER);
         lblEvidenceImage.setPreferredSize(new Dimension(300, 200));
         txtRejectReason = new JTextArea(3, 30);
-        btnApprove = new JButton("Approve");
-        btnReject = new JButton("Reject");
-        btnRequestVerification = new JButton("Request verification");
-        btnBack = new JButton("Back");
+        btnApprove = new JButton("Duyệt");
+        btnReject = new JButton("Từ chối");
+        btnRequestVerification = new JButton("Yêu cầu xác minh");
+        btnBack = new JButton("Quay lại");
 
         JPanel pnMain = new JPanel();
         pnMain.setSize(this.getSize().width-5, this.getSize().height-20);
         pnMain.setLayout(new BoxLayout(pnMain,BoxLayout.Y_AXIS));
         pnMain.add(Box.createRigidArea(new Dimension(0,10)));
 
-        JLabel lblHome = new JLabel("Meter reading detail");
+        JLabel lblHome = new JLabel("Chi tiết chỉ số điện nước");
         lblHome.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblHome.setFont (lblHome.getFont ().deriveFont (20.0f));
         pnMain.add(lblHome);
@@ -72,7 +72,7 @@ public class ReadingDetailFrm extends JFrame implements ActionListener{
 
         JPanel pnReason = new JPanel();
         pnReason.setLayout(new FlowLayout(FlowLayout.LEFT));
-        pnReason.add(new JLabel("Reject reason:"));
+        pnReason.add(new JLabel("Lý do từ chối:"));
         pnReason.add(new JScrollPane(txtRejectReason));
         pnMain.add(pnReason);
 
@@ -107,16 +107,16 @@ public class ReadingDetailFrm extends JFrame implements ActionListener{
     * display the information of the reading, including its deviation
     */
     private void initForm() {
-        lblRoomInfo.setText("Room: " + mr.getRoom().getCode() + " (area " + mr.getRoom().getArea() + " m2)");
+        lblRoomInfo.setText("Phòng: " + mr.getRoom().getCode() + " (diện tích " + mr.getRoom().getArea() + " m²)");
         lblReadingInfo.setText(mr.getType() + " " + mr.getMonth() + "/" + mr.getYear()
-            + ": previous " + mr.getPreviousValue() + ", current " + mr.getCurrentValue()
-            + ", consumption " + mr.getConsumption() + ", status " + mr.getStatus());
+            + ": chỉ số cũ " + mr.getPreviousValue() + ", chỉ số mới " + mr.getCurrentValue()
+            + ", lượng tiêu thụ " + mr.getConsumption() + ", trạng thái " + mr.getStatus());
         if(mr.getEInvoiceValue() == null) {
-            lblEInvoiceValue.setText("E-invoice value: not available");
-            lblDeviation.setText("Deviation: not available");
+            lblEInvoiceValue.setText("Chỉ số trên hóa đơn điện tử: không có dữ liệu");
+            lblDeviation.setText("Mức chênh lệch: không có dữ liệu");
         }else {
-            lblEInvoiceValue.setText("E-invoice value: " + mr.getEInvoiceValue());
-            lblDeviation.setText("Deviation (current - e-invoice): " + String.format("%.2f", mr.calcDeviation()));
+            lblEInvoiceValue.setText("Chỉ số trên hóa đơn điện tử: " + mr.getEInvoiceValue());
+            lblDeviation.setText("Mức chênh lệch (chỉ số mới - hóa đơn): " + String.format("%.2f", mr.calcDeviation()));
         }
         showEvidenceImage();
     }
@@ -124,7 +124,7 @@ public class ReadingDetailFrm extends JFrame implements ActionListener{
     private void showEvidenceImage() {
         String url = mr.getEvidenceImageUrl();
         if(url == null || url.trim().length() == 0) {
-            lblEvidenceImage.setText("No evidence image");
+            lblEvidenceImage.setText("Không có ảnh minh chứng");
             return;
         }
         try {
@@ -132,7 +132,7 @@ public class ReadingDetailFrm extends JFrame implements ActionListener{
             Image img = icon.getImage().getScaledInstance(300, 200, Image.SCALE_SMOOTH);
             lblEvidenceImage.setIcon(new ImageIcon(img));
         }catch(Exception ex) {
-            lblEvidenceImage.setText("Cannot load the evidence image: " + url);
+            lblEvidenceImage.setText("Không thể tải ảnh minh chứng: " + url);
         }
     }
 
@@ -152,7 +152,7 @@ public class ReadingDetailFrm extends JFrame implements ActionListener{
 
     private boolean checkPending() {
         if(!MeterReading.STATUS_PENDING.equals(mr.getStatus())) {
-            JOptionPane.showMessageDialog(this, "Only a PENDING reading can be verified!");
+            JOptionPane.showMessageDialog(this, "Chỉ có thể xác minh chỉ số ở trạng thái PENDING.");
             return false;
         }
         return true;
@@ -163,10 +163,10 @@ public class ReadingDetailFrm extends JFrame implements ActionListener{
         return;
         MeterReadingDAO mrd = new MeterReadingDAO();
         if(mrd.approve(mr.getId(), mr.getReviewedBy().getId())) {
-            JOptionPane.showMessageDialog(this, "The meter reading is successfully approved!");
+            JOptionPane.showMessageDialog(this, "Đã duyệt chỉ số điện nước.");
             btnBackClick();
         }else
-        JOptionPane.showMessageDialog(this, "Cannot approve the meter reading!");
+        JOptionPane.showMessageDialog(this, "Không thể duyệt chỉ số điện nước.");
     }
 
     private void btnRejectClick() {
@@ -174,15 +174,15 @@ public class ReadingDetailFrm extends JFrame implements ActionListener{
         return;
         String reason = txtRejectReason.getText().trim();
         if(reason.length() == 0) {
-            JOptionPane.showMessageDialog(this, "Please enter the reject reason!");
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập lý do từ chối.");
             return;
         }
         MeterReadingDAO mrd = new MeterReadingDAO();
         if(mrd.reject(mr.getId(), mr.getReviewedBy().getId(), reason)) {
-            JOptionPane.showMessageDialog(this, "The meter reading is successfully rejected!");
+            JOptionPane.showMessageDialog(this, "Đã từ chối chỉ số điện nước.");
             btnBackClick();
         }else
-        JOptionPane.showMessageDialog(this, "Cannot reject the meter reading!");
+        JOptionPane.showMessageDialog(this, "Không thể từ chối chỉ số điện nước.");
     }
 
     private void btnRequestVerificationClick() {

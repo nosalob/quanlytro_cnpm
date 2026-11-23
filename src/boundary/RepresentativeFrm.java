@@ -21,7 +21,7 @@ public class RepresentativeFrm extends JFrame implements ActionListener {
     private DefaultTableModel tableModel;
 
     public RepresentativeFrm(User u, Building building, Room room, Contract contract) {
-        super("Create Contract - Bước 3: Chọn Người đại diện");
+        super("Tạo hợp đồng - Bước 3: Chọn người đại diện");
         this.u = u;
         this.building = building;
         this.room = room;
@@ -36,8 +36,8 @@ public class RepresentativeFrm extends JFrame implements ActionListener {
         pnlTop.add(new JLabel("Số CCCD:"));
         txtIdCardNo = new JTextField(15);
         pnlTop.add(txtIdCardNo);
-        btnSearch = new JButton("Search"); btnSearch.addActionListener(this);
-        btnAddResident = new JButton("Add New Resident"); btnAddResident.addActionListener(this);
+        btnSearch = new JButton("Tìm kiếm"); btnSearch.addActionListener(this);
+        btnAddResident = new JButton("Thêm người thuê mới"); btnAddResident.addActionListener(this);
         pnlTop.add(btnSearch);
         pnlTop.add(btnAddResident);
         add(pnlTop, BorderLayout.NORTH);
@@ -52,8 +52,8 @@ public class RepresentativeFrm extends JFrame implements ActionListener {
         add(new JScrollPane(tblResult), BorderLayout.CENTER);
 
         JPanel pnlBottom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        btnBack = new JButton("Back"); btnBack.addActionListener(this);
-        btnSelect = new JButton("Select Representative"); btnSelect.addActionListener(this);
+        btnBack = new JButton("Quay lại"); btnBack.addActionListener(this);
+        btnSelect = new JButton("Chọn người đại diện"); btnSelect.addActionListener(this);
         pnlBottom.add(btnBack);
         pnlBottom.add(btnSelect);
         add(pnlBottom, BorderLayout.SOUTH);
@@ -78,7 +78,7 @@ public class RepresentativeFrm extends JFrame implements ActionListener {
             residents = rd.searchResident(cccd);
         }
         if (residents.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Không tìm thấy hồ sơ. Hãy nhấn 'Add New Resident' để tạo mới.");
+            JOptionPane.showMessageDialog(this, "Không tìm thấy hồ sơ. Hãy nhấn 'Thêm người thuê mới' để tạo mới.");
             return;
         }
         for (Resident r : residents) {

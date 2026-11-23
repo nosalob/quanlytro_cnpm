@@ -18,23 +18,23 @@ public class ContractMenuFrm extends JFrame implements ActionListener {
         setLayout(new GridLayout(5, 1, 10, 10));
         ((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(15, 40, 15, 40));
 
-        btnCreateContract = new JButton("Create Contract");
+        btnCreateContract = new JButton("Tạo hợp đồng");
         btnCreateContract.addActionListener(this);
         add(btnCreateContract);
 
-        JButton btnRenew = new JButton("Renew Contract");
+        JButton btnRenew = new JButton("Gia hạn hợp đồng");
         btnRenew.setEnabled(false);
         add(btnRenew);
 
-        JButton btnChangeRep = new JButton("Change Representative");
+        JButton btnChangeRep = new JButton("Đổi người đại diện");
         btnChangeRep.setEnabled(false);
         add(btnChangeRep);
 
-        JButton btnTerminate = new JButton("Terminate Contract");
+        JButton btnTerminate = new JButton("Chấm dứt hợp đồng");
         btnTerminate.setEnabled(false);
         add(btnTerminate);
 
-        btnBack = new JButton("Back");
+        btnBack = new JButton("Quay lại");
         btnBack.addActionListener(this);
         add(btnBack);
     }
